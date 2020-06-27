@@ -1,8 +1,30 @@
 {
   "name": "anchor-crm",
   "version": "0.0.1",
-  "main": "index.js",
+  "main": "./dist/main.js",
   "author": "https://github.com/codebyhumans",
   "license": "MIT",
-  "private": true
+  "private": true,
+  "scripts": {
+    "dev:electron": "NODE_ENV=development webpack --config webpack.electron.config.js --mode development && electron .",
+    "dev:react": "NODE_ENV=development webpack-dev-server --config webpack.react.config.js --mode development"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.10.3",
+    "@babel/preset-env": "^7.10.3",
+    "@babel/preset-react": "^7.10.1",
+    "@babel/preset-typescript": "^7.10.1",
+    "babel-loader": "^8.1.0",
+    "html-webpack-plugin": "^4.3.0",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0"
+  },
+  "dependencies": {
+    "@types/react": "^16.9.41",
+    "@types/react-dom": "^16.9.8",
+    "electron": "^9.0.5",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  }
 }
