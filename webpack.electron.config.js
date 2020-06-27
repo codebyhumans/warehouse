@@ -5,7 +5,7 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js'],
   },
   devtool: 'source-map',
-  entry: './electron/main.ts',
+  entry: './src/main/main.ts',
   target: 'electron-main',
   module: {
     rules: [

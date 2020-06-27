@@ -1,12 +1,15 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const nodeExternals = require('webpack-node-externals');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
+  externals: [nodeExternals()],
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
     mainFields: ['main', 'module', 'browser'],
   },
-  entry: './src/App.tsx',
+  entry: './src/renderer/App.tsx',
   target: 'electron-renderer',
   devtool: 'source-map',
   module: {
