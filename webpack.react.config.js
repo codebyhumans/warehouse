@@ -8,7 +8,7 @@ module.exports = {
     extensions: ['.tsx', '.ts', '.js'],
     mainFields: ['main', 'module', 'browser'],
   },
-  entry: './src/renderer/App.tsx',
+  entry: './src/renderer/index.tsx',
   target: 'electron-renderer',
   devtool: 'source-map',
   module: {
@@ -35,5 +35,10 @@ module.exports = {
     filename: 'js/[name].js',
     publicPath: './',
   },
-  plugins: [new HtmlWebpackPlugin()],
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './index.html',
+      filename: './index.html',
+    }),
+  ],
 };
