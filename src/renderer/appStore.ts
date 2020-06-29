@@ -1,7 +1,13 @@
 import { createContext, useContext } from 'react';
 
-export interface IAppStore {}
+import { UsersStore, IUsersStore } from './modules/users/stores/usersStore';
 
-export const appStore = createContext({});
+export interface IAppStore {
+  usersStore: IUsersStore;
+}
+
+export const appStore = createContext({
+  usersStore: new UsersStore(),
+});
 
 export const useStores = (): IAppStore => useContext(appStore);
