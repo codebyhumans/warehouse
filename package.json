@@ -8,6 +8,7 @@
   "scripts": {
     "dev:electron": "NODE_ENV=development webpack --config webpack.electron.config.js --mode development && electron .",
     "dev:react": "NODE_ENV=development webpack-dev-server --config webpack.react.config.js --mode development --watch",
+    "dev:generate": "prisma generate --watch",
     "generate": "prisma generate"
   },
   "devDependencies": {
