@@ -1,5 +1,4 @@
 import client from './prismaClient';
-import { User } from '@prisma/client';
 
 class UsersService {
   async getAllUsers() {
