@@ -8,6 +8,10 @@ export interface IUsersStore {
 }
 
 export class UsersStore {
+  constructor() {
+    this.loadUsers();
+  }
+
   @observable
   users: User[] = [];
 

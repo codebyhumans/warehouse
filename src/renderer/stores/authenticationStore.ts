@@ -1,5 +1,7 @@
 import { observable, action } from 'mobx';
 import { IUsersStore } from './usersStore';
+import { User } from '@prisma/client';
+import bcrypt from 'bcrypt';
 
 export interface IAuthenticationStore {
   password: string;
@@ -14,6 +16,9 @@ export class AuthenticationStore {
   }
 
   @observable
+  currentUser?: User;
+
+  @observable
   password: string = '';
 
   @action
@@ -22,5 +27,13 @@ export class AuthenticationStore {
   };
 
   @action
-  signIn = () => {};
+  signIn = async () => {
+    const passwordHash = await bcrypt.hash(this.password, 10);
+
+    const user = this.usersStore.users.find((u) => u.password === passwordHash);
+
+    if (user) {
+      this.currentUser = user;
+    }
+  };
 }
