@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import { Users } from './modules/users/controls/users';
+import { Users } from './components/users/Users';
 
 export default () => (
   <Switch>

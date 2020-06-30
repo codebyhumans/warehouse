@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import { observer } from 'mobx-react-lite';
 
-import { useStores } from '../../../appStore';
+import { useStores } from '../../stores/AppStore';
 
 export const Users: React.FC = observer(() => {
   const { users, loadUsers } = useStores().usersStore;
@@ -18,7 +18,6 @@ export const Users: React.FC = observer(() => {
         <div>
           {u.id}
           {u.name}
-          {u.email}
         </div>
       ))}
     </div>
