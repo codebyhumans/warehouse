@@ -1,12 +1,11 @@
 import { observable, action } from 'mobx';
 import { User } from '@prisma/client';
-//import bcrypt from 'bcrypt';
 
 import { IUsersStore } from './usersStore';
 
 export interface IAuthenticationStore {
-  password: string;
-  changePassword: (value: string) => void;
+  currentUser?: User;
+  signIn: (userId: number, password: string) => void;
 }
 
 export class AuthenticationStore {
@@ -19,19 +18,11 @@ export class AuthenticationStore {
   @observable
   currentUser?: User;
 
-  @observable
-  password: string = '';
-
   @action
-  changePassword = (value: string) => {
-    this.password = value;
-  };
+  signIn = async (userId: number, password: string) => {
+    const passwordHash = password;
 
-  @action
-  signIn = async () => {
-    const passwordHash = 'await bcrypt.hash(this.password, 10);';
-
-    const user = this.usersStore.users.find((u) => u.password === passwordHash);
+    const user = this.usersStore.users.find((u) => u.id === userId && u.password === passwordHash);
 
     if (user) {
       this.currentUser = user;

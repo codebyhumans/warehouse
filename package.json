@@ -33,6 +33,7 @@
   "dependencies": {
     "@atlaskit/atlassian-navigation": "^0.10.15",
     "@atlaskit/button": "^13.4.2",
+    "@atlaskit/checkbox": "^10.1.14",
     "@atlaskit/css-reset": "^5.0.12",
     "@atlaskit/dropdown-menu": "^9.0.6",
     "@atlaskit/form": "^7.4.1",

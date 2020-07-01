@@ -1,10 +1,19 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
-
+import { Switch, Route, Redirect, RouteProps } from 'react-router-dom';
+import { observer } from 'mobx-react-lite';
 import { SignIn } from './components/authentication/SignIn';
+import { useStores } from './stores/appStore';
 
-export default () => (
+const ProtectedRoute: React.FC<RouteProps> = observer(({ children, ...rest }) => {
+  const { currentUser } = useStores().authenticationStore;
+
+  return <Route {...rest} render={() => (currentUser ? children : <Redirect to="/signin" />)} />;
+});
+
+export const App = () => (
   <Switch>
-    <Route exact={true} path="/" component={SignIn} />
+    <ProtectedRoute exact={true} path="/" />
+    <Route path="/signin" component={SignIn} />
+    <Route path="/signup" />
   </Switch>
 );

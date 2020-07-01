@@ -2,7 +2,7 @@ import client from './prismaClient';
 
 class UsersService {
   async getAllUsers() {
-    return await client.user.findMany();
+    return await client.user.findMany({});
   }
 }
 
