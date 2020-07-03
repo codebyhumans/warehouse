@@ -3,8 +3,9 @@ import { observer } from 'mobx-react-lite';
 import styled from 'styled-components';
 
 import Button from '@atlaskit/button';
-import Form, { FormFooter } from '@atlaskit/form';
+import Form, { FormFooter, OnSubmitHandler } from '@atlaskit/form';
 
+import { history } from '../../index';
 import { useStores } from '../../stores/appStore';
 
 import { UserSelectField, IUserSelectOption } from './UserSelectField';
@@ -23,14 +24,19 @@ export const SignInForm: React.FC = observer(() => {
     usersStore: { users },
   } = useStores();
 
+  const handleSubmit: OnSubmitHandler<IFormProps> = ({ user, password, remember }) => {
+    const result = signIn(user.value, password, remember);
+
+    if (!result) {
+      return;
+    }
+
+    history.push('/');
+  };
+
   return (
     <SignInFormContainer>
-      <Form<IFormProps>
-        onSubmit={({ user, password, remember }) => {
-          console.log(user.value, password, remember);
-          signIn(user.value, password, remember);
-        }}
-      >
+      <Form<IFormProps> onSubmit={handleSubmit}>
         {({ formProps, submitting }) => (
           <form {...formProps}>
             <UserSelectField users={users} />

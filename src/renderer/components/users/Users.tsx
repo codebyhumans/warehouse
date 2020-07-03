@@ -5,11 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { useStores } from '../../stores/AppStore';
 
 export const Users: React.FC = observer(() => {
-  const { users, loadUsers } = useStores().usersStore;
-
-  useEffect(() => {
-    loadUsers();
-  }, []);
+  const { users } = useStores().usersStore;
 
   return (
     <div>

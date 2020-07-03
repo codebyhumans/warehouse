@@ -8,7 +8,7 @@ import { createBrowserHistory } from 'history';
 
 import { App } from './App';
 
-const history = createBrowserHistory();
+export const history = createBrowserHistory();
 
 render(
   <Router history={history}>
