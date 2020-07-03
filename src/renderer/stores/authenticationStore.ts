@@ -5,7 +5,7 @@ import { IUsersStore } from './usersStore';
 
 export interface IAuthenticationStore {
   currentUser?: User;
-  signIn: (userId: number, password: string) => void;
+  signIn: (userId: number, password: string, remember: boolean) => void;
 }
 
 export class AuthenticationStore {

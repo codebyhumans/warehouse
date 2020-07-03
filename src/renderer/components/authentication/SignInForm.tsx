@@ -7,12 +7,12 @@ import Form, { FormFooter } from '@atlaskit/form';
 
 import { useStores } from '../../stores/appStore';
 
-import { UserSelectField } from './UserSelectField';
+import { UserSelectField, IUserSelectOption } from './UserSelectField';
 import { PasswordField } from './PasswordField';
 import { RememberMeField } from './RememberMeField';
 
 interface IFormProps {
-  user: number;
+  user: IUserSelectOption;
   password: string;
   remember: boolean;
 }
@@ -26,9 +26,9 @@ export const SignInForm: React.FC = observer(() => {
   return (
     <SignInFormContainer>
       <Form<IFormProps>
-        onSubmit={({ user, password }) => {
-          console.log(user, password);
-          signIn(user, password);
+        onSubmit={({ user, password, remember }) => {
+          console.log(user.value, password, remember);
+          signIn(user.value, password, remember);
         }}
       >
         {({ formProps, submitting }) => (
