@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import { useStores } from './stores/appStore';
 
 import { SignIn } from './components/authentication/SignIn';
-import { Users } from './components/users/Users';
+import { Layout } from './components/layout/Layout';
 
 const ProtectedRoute: React.FC<RouteProps> = observer(({ children, ...rest }) => {
   const { currentUser } = useStores().authenticationStore;
@@ -17,10 +17,17 @@ const ProtectedRoute: React.FC<RouteProps> = observer(({ children, ...rest }) =>
   return <Route {...rest} render={() => children} />;
 });
 
-export const App = () => (
-  <Switch>
-    <ProtectedRoute exact={true} path="/" component={Users} />
-    <Route path="/signin" component={SignIn} />
-    <Route path="/signup" />
-  </Switch>
-);
+export const App = () => {
+  //Компонент лоадинга. Предзагрузка данных
+
+  return (
+    <Switch>
+      <Layout>
+        <Route exact={true} path="/" render={() => <div>123</div>} />
+      </Layout>
+
+      <Route path="/signin" component={SignIn} />
+      <Route path="/signup" />
+    </Switch>
+  );
+};

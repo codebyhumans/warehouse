@@ -9,13 +9,8 @@ export interface IAppStore {
 }
 
 export class AppStore implements IAppStore {
-  usersStore: IUsersStore;
-  authenticationStore: IAuthenticationStore;
-
-  constructor() {
-    this.usersStore = new UsersStore();
-    this.authenticationStore = new AuthenticationStore(this.usersStore);
-  }
+  usersStore = new UsersStore();
+  authenticationStore = new AuthenticationStore(this.usersStore);
 }
 
 export const store = createContext({

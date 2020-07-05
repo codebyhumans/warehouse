@@ -1,6 +1,7 @@
 import electron from 'electron';
 import path from 'path';
 import fs from 'fs';
+import debounce from 'lodash/debounce';
 
 function parseDataFile(filePath, defaults) {
   try {
@@ -22,7 +23,9 @@ export class Store {
   }
 
   set(key, val) {
-    this.data[key] = val;
-    fs.writeFileSync(this.path, JSON.stringify(this.data));
+    debounce(() => {
+      this.data[key] = val;
+      fs.writeFileSync(this.path, JSON.stringify(this.data));
+    }, 500);
   }
 }
