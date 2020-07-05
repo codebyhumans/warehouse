@@ -2,9 +2,9 @@ import { app, BrowserWindow } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 
-import { Store } from './store.js';
+import { LocalConfig } from '../common/local-config';
 
-const store = new Store({
+const store = new LocalConfig({
   configName: 'user-preferences',
   defaults: {
     windowBounds: { width: 800, height: 600 },
@@ -14,7 +14,7 @@ const store = new Store({
 let mainWindow: Electron.BrowserWindow | null;
 
 function createWindow() {
-  let { width, height } = store.get('windowBounds');
+  const { width, height } = store.get('windowBounds');
 
   mainWindow = new BrowserWindow({
     width: width,
@@ -38,8 +38,7 @@ function createWindow() {
 
   mainWindow.on('resize', () => {
     if (mainWindow) {
-      let { width, height } = mainWindow.getBounds();
-      // Now that we have them, save them using the `set` method.
+      const { width, height } = mainWindow.getBounds();
       store.set('windowBounds', { width, height });
     }
   });
