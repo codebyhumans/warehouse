@@ -17,6 +17,7 @@ export const Header = () => {
         <PrimaryButton>Склад</PrimaryButton>,
         <PrimaryButton onClick={() => history.push('/users')}>Пользователи</PrimaryButton>,
         <PrimaryButton onClick={() => history.push('/providers')}>Поставщики</PrimaryButton>,
+        <PrimaryButton onClick={() => history.push('/units')}>Ед.измерения</PrimaryButton>,
       ]}
       renderSearch={SearchDrawer}
       renderProductHome={ProductHomeExample}
