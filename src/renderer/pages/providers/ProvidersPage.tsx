@@ -1,7 +1,10 @@
 import React from 'react';
-import { Container } from '../../theme/grid';
+
 import PageHeader from '@atlaskit/page-header';
 import Button, { ButtonGroup } from '@atlaskit/button';
+
+import { Container } from '../../theme/grid';
+import { ProvidersTable } from './ProvidersTable';
 
 const actionsContent = (
   <ButtonGroup>
@@ -9,10 +12,9 @@ const actionsContent = (
   </ButtonGroup>
 );
 
-export const ProvidersPage: React.FC = () => {
-  return (
-    <Container>
-      <PageHeader actions={actionsContent}>Поставщики</PageHeader>
-    </Container>
-  );
-};
+export const ProvidersPage: React.FC = () => (
+  <Container>
+    <PageHeader actions={actionsContent}>Поставщики</PageHeader>
+    <ProvidersTable />
+  </Container>
+);
