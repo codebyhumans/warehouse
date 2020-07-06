@@ -1,13 +1,9 @@
 import React from 'react';
-import { Provider } from '@prisma/client';
-
 import DynamicTable from '@atlaskit/dynamic-table';
+import { providersService } from '@services/providers-service';
+import { useTableProcessor } from '@libs/hooks/table-processor';
 
-import providersService from '../../services/providersService';
-
-import { ISortFunctions, compareStrings } from '../../base/sortFunctions';
-import { createTableHeader, createTableRows, ProviderKeys } from './providers.data';
-import { useTableProcessor } from '../../base/useTableProcessor';
+import { createTableHeader, createTableRows } from './providers.data';
 
 export const ProvidersTable: React.FC = () => {
   const settings = useTableProcessor(providersService.getAllProviders, {

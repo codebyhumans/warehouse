@@ -1,7 +1,7 @@
 import { observable, action } from 'mobx';
 import { User } from '@prisma/client';
 
-import usersService from '../services/UsersService';
+import usersService from '../services/users-service';
 
 export interface IUsersStore {
   users: User[];

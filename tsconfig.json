@@ -16,8 +16,10 @@
       "@services/*": ["renderer/services/*"],
       "@layouts/*": ["renderer/layouts/*"],
       "@stores/*": ["renderer/stores/*"],
+      "@stores": ["renderer/stores"],
       "@pages/*": ["renderer/pages/*"],
       "@theme/*": ["renderer/theme/*"],
+      "@libs/*": ["renderer/libs/*"],
       "@common/*": ["common/*"],
       "@src/*": ["renderer/"]
     }

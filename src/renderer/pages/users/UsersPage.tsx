@@ -2,9 +2,8 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import PageHeader from '@atlaskit/page-header';
 import Button, { ButtonGroup } from '@atlaskit/button';
-
-import { Container } from '../../theme/grid';
-import { useStores } from '../../stores/AppStore';
+import { Container } from '@theme/grid';
+import { useStores } from '@stores';
 
 const actionsContent = (
   <ButtonGroup>

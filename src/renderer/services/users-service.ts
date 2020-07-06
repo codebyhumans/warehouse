@@ -1,4 +1,4 @@
-import client from './prismaClient';
+import client from '@libs/prisma';
 
 class UsersService {
   async getAllUsers() {

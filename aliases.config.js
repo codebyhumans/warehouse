@@ -7,6 +7,7 @@ const aliases = {
   '@stores': 'src/renderer/stores',
   '@pages': 'src/renderer/pages',
   '@theme': 'src/renderer/theme',
+  '@libs': 'src/renderer/libs',
   '@common': 'src/common',
   '@src': 'src/renderer',
 };

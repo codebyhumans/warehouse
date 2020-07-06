@@ -1,9 +1,8 @@
 import React from 'react';
-
 import PageHeader from '@atlaskit/page-header';
 import Button, { ButtonGroup } from '@atlaskit/button';
+import { Container } from '@theme/grid';
 
-import { Container } from '../../theme/grid';
 import { ProvidersTable } from './ProvidersTable';
 
 const actionsContent = (

@@ -13,11 +13,11 @@ export const BasicLayout: React.FC = ({ children }) => {
 };
 
 const Layout = styled.div`
-  /* flex: 1;
+  flex: 1;
   display: flex;
-  flex-direction: column; */
+  flex-direction: column;
 `;
 
 const Content = styled.div`
-  /* flex: 1; */
+  flex: 1;
 `;

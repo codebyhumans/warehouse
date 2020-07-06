@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import Form, { FormFooter, OnSubmitHandler } from '@atlaskit/form';
 
-import { useStores } from '../../stores/appStore';
+import { useStores } from '../../stores';
 
 import { UserSelectField, IUserSelectOption } from './UserSelectField';
 import { PasswordField } from './PasswordField';

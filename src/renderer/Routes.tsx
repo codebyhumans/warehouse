@@ -12,7 +12,7 @@ import { UsersPage } from './pages/users/UsersPage';
 
 export const Routes: React.FC = () => {
   const history = useHistory();
-  history.replace('/');
+  // history.replace('/');
 
   return (
     <Router>

@@ -1,7 +1,7 @@
 import { Provider } from '@prisma/client';
 import { HeadType, RowType } from '@atlaskit/dynamic-table/dist/cjs/types';
 
-export enum ProviderKeys {
+enum ProviderKeys {
   Name = 'name',
   Address = 'address',
   Phone = 'phone',

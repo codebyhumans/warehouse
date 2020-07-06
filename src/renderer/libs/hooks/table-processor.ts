@@ -19,7 +19,6 @@ export function useTableProcessor<T>(load: (args?: any) => Promise<T[]>, options
   const orderBy = useMemo(() => ({ [sortKey]: sortOrder.toLowerCase() }), [sortOrder, sortKey]);
 
   const fetchData = async () => {
-    console.log(orderBy);
     try {
       setLoading(true);
 
