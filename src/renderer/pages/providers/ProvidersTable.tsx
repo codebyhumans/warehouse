@@ -9,14 +9,11 @@ import { ISortFunctions, compareStrings } from '../../base/sortFunctions';
 import { createTableHeader, createTableRows, ProviderKeys } from './providers.data';
 import { useTableProcessor } from '../../base/useTableProcessor';
 
-const sortFunctions: ISortFunctions<Provider> = {
-  [ProviderKeys.Name]: (a, b) => compareStrings(a.name.toLocaleLowerCase(), b.name.toLocaleLowerCase()),
-};
-
 export const ProvidersTable: React.FC = () => {
-  const settings = useTableProcessor(providersService.getAllProviders, createTableHeader, createTableRows, {
-    itemSortKey: ProviderKeys.Name,
-    sortFunctions,
+  const settings = useTableProcessor(providersService.getAllProviders, {
+    head: createTableHeader,
+    rows: createTableRows,
+    defaultSortKey: 'name',
   });
 
   return <DynamicTable {...settings} />;

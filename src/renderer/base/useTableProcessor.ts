@@ -1,61 +1,51 @@
 import { useState, useMemo, useEffect } from 'react';
-
 import { HeadType, RowType } from '@atlaskit/dynamic-table/dist/cjs/types';
 
-import { ISortFunctions } from './sortFunctions';
+type SortOrderType = 'ASC' | 'DESC';
 
 interface ITableProcessorOptions<T> {
-  itemSortKey: string;
-  sortFunctions: ISortFunctions<T>;
+  rows: (items: T[]) => RowType[];
+  head: () => HeadType;
+  defaultSortKey?: string;
+  defaultSortOrder?: SortOrderType;
 }
 
-export function useTableProcessor<T>(
-  loadData: () => Promise<T[]>,
-  createHeader: () => HeadType,
-  createRows: (items: T[]) => RowType[],
-  options: ITableProcessorOptions<T>,
-) {
-  const [storedItems, setStoredItems] = useState<T[]>([]);
-  const [sortOrder, setSortOrder] = useState<'DESC' | 'ASC'>('ASC');
-  const [sortKey, setSortKey] = useState(options.itemSortKey);
-  const [isLoading, setIsLoading] = useState(false);
+export function useTableProcessor<T>(load: (args?: any) => Promise<T[]>, options: ITableProcessorOptions<T>) {
+  const [sortOrder, setSortOrder] = useState<SortOrderType>(options.defaultSortOrder || 'ASC');
+  const [sortKey, setSortKey] = useState<string>(options.defaultSortKey || 'id');
+  const [isLoading, setLoading] = useState(false);
+  const [rows, setRows] = useState<T[]>([]);
 
-  async function fetchData() {
+  const orderBy = useMemo(() => ({ [sortKey]: sortOrder.toLowerCase() }), [sortOrder, sortKey]);
+
+  const fetchData = async () => {
+    console.log(orderBy);
     try {
-      setIsLoading(true);
-      const data = await loadData();
-      setStoredItems(data);
-    } catch (error) {
-      //processError
+      setLoading(true);
+
+      const data = await load({
+        orderBy,
+      });
+      setRows(data);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
     fetchData();
-  }, []);
-
-  const items = useMemo(() => {
-    const result = storedItems.sort(options.sortFunctions[sortKey]);
-
-    if (sortOrder === 'DESC') {
-      result.reverse();
-    }
-
-    return result;
-  }, [storedItems, sortOrder, sortKey]);
+  }, [orderBy]);
 
   const onSort = (props: any) => {
-    setSortKey(props.key);
     setSortOrder(props.sortOrder);
+    setSortKey(props.key);
+
+    console.log(props);
   };
 
   return {
-    head: createHeader(),
-    rows: createRows(items),
-    defaultPage: 1,
-    rowsPerPage: 20,
+    rows: options.rows(rows),
+    head: options.head(),
     isLoading,
     sortOrder,
     sortKey,
