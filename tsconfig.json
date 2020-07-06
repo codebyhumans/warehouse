@@ -19,7 +19,7 @@
       "@pages/*": ["renderer/pages/*"],
       "@theme/*": ["renderer/theme/*"],
       "@common/*": ["common/*"],
-      "@src": ["*"]
+      "@src/*": ["renderer/"]
     }
   }
 }

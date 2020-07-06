@@ -8,7 +8,7 @@ const aliases = {
   '@pages': 'src/renderer/pages',
   '@theme': 'src/renderer/theme',
   '@common': 'src/common',
-  '@src': 'src',
+  '@src': 'src/renderer',
 };
 
 module.exports = {
