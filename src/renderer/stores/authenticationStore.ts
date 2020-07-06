@@ -5,8 +5,12 @@ import { IUsersStore } from './usersStore';
 
 export interface IAuthenticationStore {
   currentUser?: User;
+  loaded?: Boolean;
+  load: () => any;
   signIn: (userId: number, password: string, remember: boolean) => boolean;
 }
+
+const asyncTimeout = (timeout: number) => new Promise((resolve) => setTimeout(resolve, timeout));
 
 export class AuthenticationStore implements IAuthenticationStore {
   private readonly usersStore: IUsersStore;
@@ -16,7 +20,15 @@ export class AuthenticationStore implements IAuthenticationStore {
   }
 
   @observable
+  loaded?: Boolean;
+
+  @observable
   currentUser?: User;
+
+  @action
+  async load() {
+    await asyncTimeout(1000);
+  }
 
   @action
   signIn = (userId: number, password: string, remember: boolean) => {

@@ -231,6 +231,14 @@
     "@emotion/core" "^10.0.9"
     tslib "^1.9.3"
 
+"@atlaskit/page-header@^10.0.0":
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/page-header/-/page-header-10.0.0.tgz#6365b437894a25099c99cee9e190811d2519592e"
+  integrity sha512-TE9XvUWi3uX+kwq7KGCsK+3OBMpgy8QF/+8dpL23b/QP1YBubjG1+fBIDQtjlam3gKVKxZ6YvcULQuRcE3iyVw==
+  dependencies:
+    "@atlaskit/theme" "^10.0.0"
+    tslib "^1.9.3"
+
 "@atlaskit/page-layout@0.8.0":
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/@atlaskit/page-layout/-/page-layout-0.8.0.tgz#7ef111e005e6b827ef532cc5af5a3aea601c2710"
@@ -342,7 +350,7 @@
     "@emotion/core" "^10.0.9"
     tslib "^1.9.3"
 
-"@atlaskit/spinner@15.0.0", "@atlaskit/spinner@^15.0.0":
+"@atlaskit/spinner@^15.0.0":
   version "15.0.0"
   resolved "https://registry.yarnpkg.com/@atlaskit/spinner/-/spinner-15.0.0.tgz#bbf00803003ed4b674c27557d2b26198045ea5b0"
   integrity sha512-y0D5PN/mddbNSJ0PaVAC962hbYT+RwgYtzcuY3cq0shXiDe6UIWRPcDSZ01f2GpimjZG7LbbsmpetYv43XX1Xg==

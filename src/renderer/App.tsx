@@ -1,33 +1,24 @@
 import React from 'react';
-import { Switch, Route, Redirect, RouteProps } from 'react-router-dom';
-import { observer } from 'mobx-react-lite';
+import styled from 'styled-components';
+import { createBrowserHistory } from 'history';
+import { Router as AppRouter } from 'react-router-dom';
 
-import { useStores } from './stores/appStore';
+import { Routes } from './Routes';
+import { Notifications } from './components/Notifications';
 
-import { SignIn } from './components/authentication/SignIn';
-import { Layout } from './components/layout/Layout';
+const history = createBrowserHistory();
 
-const ProtectedRoute: React.FC<RouteProps> = observer(({ children, ...rest }) => {
-  const { currentUser } = useStores().authenticationStore;
+export const App: React.FC = () => (
+  <Wrapper>
+    <Notifications />
+    <AppRouter history={history}>
+      <Routes />
+    </AppRouter>
+  </Wrapper>
+);
 
-  if (!currentUser) {
-    return <Redirect to="/signin" />;
-  }
-
-  return <Route {...rest} render={() => children} />;
-});
-
-export const App = () => {
-  //Компонент лоадинга. Предзагрузка данных
-
-  return (
-    <Switch>
-      <Layout>
-        <Route exact={true} path="/" render={() => <div>123</div>} />
-      </Layout>
-
-      <Route path="/signin" component={SignIn} />
-      <Route path="/signup" />
-    </Switch>
-  );
-};
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+`;

@@ -5,12 +5,12 @@ import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import Form, { FormFooter, OnSubmitHandler } from '@atlaskit/form';
 
-import { history } from '../../index';
 import { useStores } from '../../stores/appStore';
 
 import { UserSelectField, IUserSelectOption } from './UserSelectField';
 import { PasswordField } from './PasswordField';
 import { RememberMeField } from './RememberMeField';
+import { useHistory } from 'react-router';
 
 interface IFormProps {
   user: IUserSelectOption;
@@ -18,20 +18,24 @@ interface IFormProps {
   remember: boolean;
 }
 
-export const SignInForm: React.FC = observer(() => {
+export const SignInForm: React.FC = observer((props) => {
   const {
     authenticationStore: { signIn },
     usersStore: { users },
   } = useStores();
 
+  const history = useHistory();
+
   const handleSubmit: OnSubmitHandler<IFormProps> = ({ user, password, remember }) => {
     const result = signIn(user.value, password, remember);
+
+    console.log(result);
 
     if (!result) {
       return;
     }
 
-    history.push('/');
+    history.push('/users');
   };
 
   return (

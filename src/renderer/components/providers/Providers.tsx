@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import DynamicTable from '@atlaskit/dynamic-table';
 
 import { useStores } from '../../stores/appStore';
+import { Container } from '../../theme/grid';
 
 import { createTableHeader, createTableRows } from './providers.data';
 
@@ -20,7 +21,7 @@ export const Providers: React.FC = observer(() => {
   };
 
   return (
-    <Wrapper>
+    <Container>
       <DynamicTable
         caption="Поставщики"
         head={createTableHeader()}
@@ -31,10 +32,6 @@ export const Providers: React.FC = observer(() => {
         sortKey={sortKey}
         onSort={handleSort}
       />
-    </Wrapper>
+    </Container>
   );
 });
-
-const Wrapper = styled.div`
-  min-width: 600px;
-`;
