@@ -1,7 +1,16 @@
 import { Provider } from '@prisma/client';
 import { HeadType, RowType } from '@atlaskit/dynamic-table/dist/cjs/types';
 
-import { ProviderKeys } from '../../stores/providersStore';
+export enum ProviderKeys {
+  Name = 'name',
+  Address = 'address',
+  Phone = 'phone',
+  Email = 'email',
+  BankName = 'bankName',
+  BankAddress = 'bankAddress',
+  BankMfo = 'bankMfo',
+  BankExpense = 'bankExpense',
+}
 
 const RowNames = {
   [ProviderKeys.Name]: 'Имя',
