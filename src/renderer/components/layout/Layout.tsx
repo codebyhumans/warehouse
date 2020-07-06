@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { colors } from '../base/colors';
+import { colors } from '../../base/colors';
 
 export const Layout: React.FC = (props) => (
   <div>
