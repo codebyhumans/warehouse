@@ -2,7 +2,7 @@ import { app, BrowserWindow } from 'electron';
 import * as path from 'path';
 import * as url from 'url';
 
-import { LocalConfig } from '../common/local-config';
+import { LocalConfig } from '@common/local-config';
 
 const store = new LocalConfig({
   configName: 'user-preferences',

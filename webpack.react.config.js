@@ -1,12 +1,14 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
+const aliases = require('./aliases.config');
 
 module.exports = {
   externals: [nodeExternals()],
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
     mainFields: ['main', 'module', 'browser'],
+    alias: aliases.webpack,
   },
   entry: './src/renderer/index.tsx',
   target: 'electron-renderer',

@@ -9,6 +9,17 @@
     "outDir": "./dist",
     "strict": true,
     "esModuleInterop": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "baseUrl": "./src",
+    "paths": {
+      "@components/*": ["renderer/components/*"],
+      "@services/*": ["renderer/services/*"],
+      "@layouts/*": ["renderer/layouts/*"],
+      "@stores/*": ["renderer/stores/*"],
+      "@pages/*": ["renderer/pages/*"],
+      "@theme/*": ["renderer/theme/*"],
+      "@common/*": ["common/*"],
+      "@src": ["*"]
+    }
   }
 }

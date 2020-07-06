@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import { createBrowserHistory } from 'history';
 import { Router as AppRouter } from 'react-router-dom';
 
-import { Routes } from './Routes';
-import { Notifications } from './components/Notifications';
+import { Notifications } from '@components/Notifications';
+import { Routes } from '@src/Routes';
 
 const history = createBrowserHistory();
 

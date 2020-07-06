@@ -1,8 +1,10 @@
 const path = require('path');
+const aliases = require('./aliases.config');
 
 module.exports = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
+    alias: aliases.webpack,
   },
   devtool: 'source-map',
   entry: './src/main/main.ts',
