@@ -12,16 +12,12 @@
     "experimentalDecorators": true,
     "baseUrl": "./src",
     "paths": {
-      "@components/*": ["renderer/components/*"],
-      "@services/*": ["renderer/services/*"],
-      "@layouts/*": ["renderer/layouts/*"],
-      "@stores/*": ["renderer/stores/*"],
-      "@stores": ["renderer/stores"],
-      "@pages/*": ["renderer/pages/*"],
-      "@theme/*": ["renderer/theme/*"],
-      "@libs/*": ["renderer/libs/*"],
+      "@electron/*": ["electron/*"],
+      "@electron": ["electron"],
+      "@client/*": ["client/*"],
+      "@client": ["client"],
       "@common/*": ["common/*"],
-      "@src/*": ["renderer/"]
+      "@common": ["common"]
     }
   }
 }

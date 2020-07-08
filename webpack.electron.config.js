@@ -7,7 +7,7 @@ module.exports = {
     alias: aliases.webpack,
   },
   devtool: 'source-map',
-  entry: './src/main/main.ts',
+  entry: './src/electron/main.ts',
   target: 'electron-main',
   module: {
     rules: [
