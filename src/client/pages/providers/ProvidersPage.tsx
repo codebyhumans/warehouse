@@ -6,16 +6,12 @@ import { Container } from '@client/theme/grid';
 import { ProvidersTable } from './ProvidersTable';
 import { useModals } from '@client/components/Modals';
 
-import { ProviderModal } from './ProviderModal';
-
 const ActionsContent: React.FC = () => {
-  const modal = useModals();
+  const { setModal } = useModals();
 
   return (
     <ButtonGroup>
-      <Button appearance="primary" onClick={() => modal.setModal(() => <ProviderModal id={1} />)}>
-        Добавить поставщика
-      </Button>
+      <Button appearance="primary">Добавить поставщика</Button>
     </ButtonGroup>
   );
 };
