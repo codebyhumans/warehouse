@@ -1,5 +1,9 @@
+import React from 'react';
 import { Provider } from '@prisma/client';
 import { HeadType, RowType } from '@atlaskit/dynamic-table/dist/cjs/types';
+import { useModals } from '@client/components/Modals';
+import { ProviderModal, ProviderActions } from './ProviderModal';
+import DropdownMenu, { DropdownItem, DropdownItemGroup } from '@atlaskit/dropdown-menu';
 
 enum ProviderKeys {
   Name = 'name',
@@ -10,10 +14,11 @@ enum ProviderKeys {
   BankAddress = 'bankAddress',
   BankMfo = 'bankMfo',
   BankExpense = 'bankExpense',
+  Actions = 'actions',
 }
 
 const RowNames = {
-  [ProviderKeys.Name]: 'Имя',
+  [ProviderKeys.Name]: 'Название',
   [ProviderKeys.Address]: 'Адрес',
   [ProviderKeys.Phone]: 'Телефон',
   [ProviderKeys.Email]: 'Почта',
@@ -21,6 +26,7 @@ const RowNames = {
   [ProviderKeys.BankAddress]: 'Адрес банка',
   [ProviderKeys.BankMfo]: 'МФО Банка',
   [ProviderKeys.BankExpense]: 'Банковские расходы',
+  [ProviderKeys.Actions]: 'Действия',
 };
 
 export const createTableHeader = (withWidth?: boolean): HeadType => ({
@@ -47,22 +53,20 @@ export const createTableHeader = (withWidth?: boolean): HeadType => ({
       content: RowNames[ProviderKeys.BankName],
     },
     {
-      key: ProviderKeys.BankAddress,
-      content: RowNames[ProviderKeys.BankAddress],
-    },
-    {
-      key: ProviderKeys.BankMfo,
-      content: RowNames[ProviderKeys.BankMfo],
-    },
-    {
-      key: ProviderKeys.BankExpense,
-      content: RowNames[ProviderKeys.BankExpense],
+      key: ProviderKeys.Actions,
     },
   ],
 });
 
-export const createTableRows = (providers: Provider[]): RowType[] =>
-  providers.map((p) => ({
+export const createTableRows = (providers: Provider[]): RowType[] => {
+  const { setModal } = useModals();
+
+  const setProviderModal = (id: number, action: ProviderActions) => () => {
+    console.log(id, action);
+    setModal(() => <ProviderModal id={id} action={action} />);
+  };
+
+  return providers.map((p) => ({
     key: `${p.id}`,
     cells: [
       {
@@ -86,16 +90,25 @@ export const createTableRows = (providers: Provider[]): RowType[] =>
         content: p.bankName,
       },
       {
-        key: ProviderKeys.BankAddress,
-        content: p.bankAddress,
-      },
-      {
-        key: ProviderKeys.BankMfo,
-        content: p.bankMfo,
-      },
-      {
-        key: ProviderKeys.BankExpense,
-        content: p.bankExpense,
+        key: ProviderKeys.Actions,
+        content: (
+          <DropdownMenu trigger="Действия" triggerType="button">
+            <DropdownItemGroup>
+              <DropdownItem
+                onClick={(e: React.MouseEvent | React.KeyboardEvent) => {
+                  e.preventDefault();
+                  console.log(e);
+                  //setModal(() => <ProviderModal id={p.id} action="info" />);
+                }}
+              >
+                Информация
+              </DropdownItem>
+              <DropdownItem onClick={setProviderModal(p.id, 'update')}>Изменить</DropdownItem>
+              <DropdownItem onClick={setProviderModal(p.id, 'delete')}>Удалить</DropdownItem>
+            </DropdownItemGroup>
+          </DropdownMenu>
+        ),
       },
     ],
   }));
+};

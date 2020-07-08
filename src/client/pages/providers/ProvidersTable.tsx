@@ -3,7 +3,7 @@ import DynamicTable from '@atlaskit/dynamic-table';
 import { providersService } from '@client/services/providers-service';
 import { useTableProcessor } from '@client/libs/hooks/table-processor';
 
-import { createTableHeader, createTableRows } from './providers.data';
+import { createTableHeader, createTableRows } from './ProvidersData';
 
 export const ProvidersTable: React.FC = () => {
   const settings = useTableProcessor(providersService.getAllProviders, {
