@@ -1,16 +1,38 @@
-import React from 'react';
-import DynamicTable from '@atlaskit/dynamic-table';
+import React, { useMemo } from 'react';
 import { unitsService } from '@client/services/units-service';
-import { useTableProcessor } from '@client/libs/hooks/table-processor';
-
-import { createTableHeader, createTableRows } from './units.data';
+import { Table, useTableProcessor } from '@client/components/Table';
+import { useModals } from '@client/components/Modals';
+import { UnitManageModal } from './UnitManageModal';
+import { Unit } from '@prisma/client';
 
 export const UnitsTable: React.FC = () => {
-  const settings = useTableProcessor(unitsService.getAllUnits, {
-    head: createTableHeader,
-    rows: createTableRows,
-    defaultSortKey: 'name',
+  const modals = useModals();
+
+  const openUnitManageModal = (id: number) => modals.setModal(() => <UnitManageModal id={id} />);
+
+  const { settings } = useTableProcessor<Unit>(unitsService.getAllUnits, {
+    name: 'units',
+    columns: [
+      {
+        Header: 'Название',
+        accessor: 'name',
+      },
+      {
+        Header: 'Мера',
+        accessor: 'measure',
+        Cell: ({ cell }) => <i>{cell.value}</i>,
+      },
+      {
+        Header: '',
+        accessor: 'id',
+        Cell: ({ cell }) => <div onClick={() => openUnitManageModal(cell.value)}>{cell.value}</div>,
+        Footer: ({ rows }) => {
+          const total = useMemo(() => rows.reduce((sum, row) => row.values.id + sum, 0), [rows]);
+          return <>Total: {total}</>;
+        },
+      },
+    ],
   });
 
-  return <DynamicTable {...settings} />;
+  return <Table {...settings} />;
 };

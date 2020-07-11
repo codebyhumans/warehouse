@@ -4,16 +4,24 @@ import Button, { ButtonGroup } from '@atlaskit/button';
 import { Container } from '@client/theme/grid';
 
 import { UnitsTable } from './UnitsTable';
+import { useModals } from '@client/components/Modals';
+import { UnitManageModal } from './UnitManageModal';
 
-const actionsContent = (
-  <ButtonGroup>
-    <Button appearance="primary">Добавить ед.измерения</Button>
-  </ButtonGroup>
-);
+const ActionsContent: React.FC = () => {
+  const { setModal } = useModals();
+
+  return (
+    <ButtonGroup>
+      <Button appearance="primary" onClick={() => setModal(() => <UnitManageModal />)}>
+        Добавить
+      </Button>
+    </ButtonGroup>
+  );
+};
 
 export const UnitsPage: React.FC = () => (
   <Container>
-    <PageHeader actions={actionsContent}>Еденицы измерения</PageHeader>
+    <PageHeader actions={<ActionsContent />}>Единицы измерения</PageHeader>
     <UnitsTable />
   </Container>
 );

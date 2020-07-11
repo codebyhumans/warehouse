@@ -1,5 +1,7 @@
 import debounce from 'lodash/debounce';
 import electron from 'electron';
+import get from 'lodash/get';
+import set from 'lodash/set';
 import path from 'path';
 import fs from 'fs';
 
@@ -19,6 +21,8 @@ export class LocalConfig {
 
   constructor(private readonly options: ILocalConfigOptions) {
     const userDataPath = (electron.app || electron.remote.app).getPath('userData');
+
+    console.log(userDataPath);
     this.path = path.join(userDataPath, this.options.configName + '.json');
     this.data = this.initConfig(this.options.defaults);
   }
@@ -35,12 +39,19 @@ export class LocalConfig {
     fs.writeFileSync(this.path, JSON.stringify(this.data));
   }, this.options.debounce || 300);
 
-  get(key: string): any {
-    return this.data[key];
+  get(key: string, defaultValue?: any): any {
+    return get(this.data, key, defaultValue);
   }
 
   set(key: string, val: any) {
-    this.data[key] = val;
+    set(this.data, key, val);
     this.saveConfig();
   }
 }
+
+export const localConfig = new LocalConfig({
+  configName: 'local-config',
+  defaults: {
+    windowBounds: { width: 800, height: 600 },
+  },
+});
