@@ -22,7 +22,6 @@ export class LocalConfig {
   constructor(private readonly options: ILocalConfigOptions) {
     const userDataPath = (electron.app || electron.remote.app).getPath('userData');
 
-    console.log(userDataPath);
     this.path = path.join(userDataPath, this.options.configName + '.json');
     this.data = this.initConfig(this.options.defaults);
   }

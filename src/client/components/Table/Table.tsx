@@ -136,7 +136,7 @@ const HeaderCell = styled(Cell)`
   font-size: 13px;
 `;
 
-const Sort = styled.div<{ readonly desc: boolean }>`
+const Sort = styled.div<{ readonly desc: boolean | undefined }>`
   position: relative;
 
   &:before,

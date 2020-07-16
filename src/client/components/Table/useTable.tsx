@@ -8,11 +8,12 @@ interface ITableProcessorOptions<T extends object> {
   columnOptions?: {};
 }
 
+const tableCache = {};
+
 const getInitialState = (tableName: string) => {
   const state: { [key: string]: any } = {};
 
   const tableConfig = localConfig.get(`tables.${tableName}`, {});
-  console.log(tableConfig);
 
   if (tableConfig.sort) state.sortBy = tableConfig.sort;
   if (tableConfig.sizes) state.columnResizing = tableConfig.sizes;

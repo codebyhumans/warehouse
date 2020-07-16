@@ -33,7 +33,7 @@ module.exports = {
     publicPath: '/',
   },
   output: {
-    path: path.resolve(__dirname, '../dist/client'),
+    path: path.resolve(__dirname, './dist/client'),
     filename: 'js/[name].js',
     publicPath: './',
   },
