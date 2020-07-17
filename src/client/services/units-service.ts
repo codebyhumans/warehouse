@@ -1,30 +1,22 @@
-import { FindManyUnitArgs, UnitCreateInput, UnitUpdateInput } from '@prisma/client';
-import { prisma } from '@client/libs/prisma';
+import { db } from '@db';
+import { IUnit } from '@db/types/unit';
 
 export default class UnitsService {
-  async getAllUnits(options: FindManyUnitArgs) {
-    return prisma.unit.findMany(options);
+  async getAllUnits() {
+    return db<IUnit>('Unit').select('*');
   }
 
   async getUnitById(id: number) {
-    return prisma.unit.findOne({
-      where: {
-        id,
-      },
-    });
+    return db<IUnit>('Unit').where({ id }).first();
   }
 
-  async createUnit(data: UnitCreateInput) {
-    return prisma.unit.create({ data });
+  async createUnit(name: string, measure: string): Promise<IUnit> {
+    return db<IUnit>('Unit').insert({ name, measure });
   }
 
-  async updateUnit(id: number, data: UnitUpdateInput) {
-    return prisma.unit.update({
-      where: {
-        id,
-      },
-      data,
-    });
+  // TODO: data any?
+  async updateUnit(id: number, data: any) {
+    return db<IUnit>('Unit').where({ id }).update(data);
   }
 }
 

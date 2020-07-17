@@ -1,10 +1,10 @@
 import { observable, action } from 'mobx';
-import { User } from '@prisma/client';
 
 import { usersService } from '../services/users-service';
+import { IUser } from '@db/types/user';
 
 export interface IUsersStore {
-  users: User[];
+  users: IUser[];
   loadUsers: () => void;
 }
 
@@ -14,7 +14,7 @@ export class UsersStore {
   }
 
   @observable
-  users: User[] = [];
+  users: IUser[] = [];
 
   @action
   loadUsers = async () => {

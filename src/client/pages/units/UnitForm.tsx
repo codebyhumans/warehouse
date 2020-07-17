@@ -1,13 +1,13 @@
 import React from 'react';
 import Button, { ButtonGroup } from '@atlaskit/button';
-import { Unit } from '@prisma/client';
 import Form, { Field, FormFooter } from '@atlaskit/form';
 import TextField from '@atlaskit/textfield';
 import { unitsService } from '@client/services/units-service';
 import { ModalFooter } from '@atlaskit/modal-dialog';
+import { IUnit } from '@db/types/unit';
 
 interface IProps {
-  unit?: Unit;
+  unit?: IUnit;
   loading: boolean;
   onCancel: () => void;
   onSuccess?: () => void;
@@ -21,7 +21,7 @@ interface IFormProps {
 export const UnitForm: React.FC<IProps> = ({ loading, unit, onCancel }) => {
   const onSubmit = async (data: IFormProps) => {
     if (!unit) {
-      await unitsService.createUnit(data);
+      await unitsService.createUnit(data.name, data.measure);
     } else await unitsService.updateUnit(unit.id, data);
   };
 

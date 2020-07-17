@@ -1,29 +1,19 @@
 import bcrypt from 'bcrypt';
-import { User } from '@prisma/client';
-import { prisma } from '@client/libs/prisma';
+import { IUser } from '@db/types/user';
+import { db } from '@db';
 
 class UsersService {
-  async createUser(name: string, pass: string): Promise<User> {
+  async createUser(name: string, pass: string): Promise<IUser> {
     const password = bcrypt.hashSync(pass, 10);
-
-    return prisma.user.create({
-      data: {
-        name,
-        password,
-      },
-    });
+    return db<IUser>('User').insert({ name, password });
   }
 
-  async getUserById(id: number): Promise<User | null> {
-    return prisma.user.findOne({
-      where: {
-        id,
-      },
-    });
+  async getUserById(id: number): Promise<IUser | undefined> {
+    return db<IUser>('User').where({ id }).first();
   }
 
-  async getAllUsers() {
-    return prisma.user.findMany({});
+  async getAllUsers(): Promise<IUser[]> {
+    return db<IUser>('User').select('*');
   }
 }
 
