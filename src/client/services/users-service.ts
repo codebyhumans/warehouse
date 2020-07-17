@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt';
-import { IUser } from '@db/types/user';
-import { db } from '@db';
+import { IUser } from '@common/database/types/user';
+import { db } from '@common/database';
 
 class UsersService {
   async createUser(name: string, pass: string): Promise<IUser> {

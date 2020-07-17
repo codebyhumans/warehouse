@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { providersService } from '@client/services/providers-service';
 import { useModals } from '@client/components/Modals';
 import ModalDialog from '@atlaskit/modal-dialog';
-import { IProvider } from '@db/types/provider';
+import { IProvider } from '@common/database/types/provider';
 import Button from '@atlaskit/button';
 import Form, { FormFooter } from '@atlaskit/form';
 import TextField from '@atlaskit/textfield';

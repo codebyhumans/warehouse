@@ -4,7 +4,7 @@ import ModalDialog from '@atlaskit/modal-dialog';
 
 import { UnitForm } from './UnitForm';
 import { unitsService } from '@client/services/units-service';
-import { IUnit } from '@db/types/unit';
+import { IUnit } from '@common/database/types/unit';
 
 interface IProps {
   onSuccess?: () => void;

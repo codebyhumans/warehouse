@@ -1,4 +1,4 @@
-import { db } from '@db';
+import { db } from '@common/database';
 
 type ConfigValueType = 'json';
 

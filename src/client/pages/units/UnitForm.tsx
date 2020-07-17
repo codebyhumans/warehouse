@@ -4,7 +4,7 @@ import Form, { Field, FormFooter } from '@atlaskit/form';
 import TextField from '@atlaskit/textfield';
 import { unitsService } from '@client/services/units-service';
 import { ModalFooter } from '@atlaskit/modal-dialog';
-import { IUnit } from '@db/types/unit';
+import { IUnit } from '@common/database/types/unit';
 
 interface IProps {
   unit?: IUnit;

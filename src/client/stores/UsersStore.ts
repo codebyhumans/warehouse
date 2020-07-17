@@ -1,7 +1,7 @@
 import { observable, action } from 'mobx';
 
 import { usersService } from '../services/users-service';
-import { IUser } from '@db/types/user';
+import { IUser } from '@common/database/types/user';
 
 export interface IUsersStore {
   users: IUser[];

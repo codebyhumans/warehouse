@@ -20,3 +20,4 @@ buck-out/
 
 # App
 dist/
+build/

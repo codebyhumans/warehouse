@@ -1,5 +1,5 @@
-import { db } from '@db';
-import { IUnit } from '@db/types/unit';
+import { db } from '@common/database';
+import { IUnit } from '@common/database/types/unit';
 
 export default class UnitsService {
   async getAllUnits() {

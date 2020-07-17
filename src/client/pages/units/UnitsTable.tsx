@@ -3,7 +3,7 @@ import { unitsService } from '@client/services/units-service';
 import { Table, useTableProcessor } from '@client/components/Table';
 import { useModals } from '@client/components/Modals';
 import { UnitManageModal } from './UnitManageModal';
-import { IUnit } from '@db/types/unit';
+import { IUnit } from '@common/database/types/unit';
 
 export const UnitsTable: React.FC = () => {
   const modals = useModals();

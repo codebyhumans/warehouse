@@ -1,5 +1,5 @@
-import { IProvider } from '@db/types/provider';
-import { db } from '@db';
+import { IProvider } from '@common/database/types/provider';
+import { db } from '@common/database';
 
 export default class ProvidersService {
   async getAllProviders(): Promise<IProvider[]> {

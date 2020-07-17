@@ -29,8 +29,6 @@ export const SignInForm: React.FC = observer((props) => {
   const handleSubmit: OnSubmitHandler<IFormProps> = ({ user, password, remember }) => {
     const result = signIn(user.value, password, remember);
 
-    console.log(result);
-
     if (!result) {
       return;
     }

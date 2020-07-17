@@ -17,9 +17,7 @@
       "@client/*": ["client/*"],
       "@client": ["client"],
       "@common/*": ["common/*"],
-      "@common": ["common"],
-      "@db/*": ["database/*"],
-      "@db": ["database"]
+      "@common": ["common"]
     }
   }
 }

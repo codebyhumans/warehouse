@@ -1,15 +1,39 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, ipcMain as ipc } from 'electron';
+import { localConfig } from '@common/local-config';
 import * as path from 'path';
 import * as url from 'url';
 
-import { localConfig } from '@common/local-config';
+const isProduction = process.env.NODE_ENV === 'production';
 
-let mainWindow: Electron.BrowserWindow | null;
+const createBootstrapWindow = () => {
+  const window = new BrowserWindow({
+    webPreferences: {
+      nodeIntegration: true,
+    },
+    maximizable: false,
+    minimizable: false,
+    resizable: false,
+    movable: false,
+    center: true,
+    height: 270,
+    width: 450,
+  });
 
-function createWindow() {
+  window.loadURL(
+    url.format({
+      pathname: path.join(__dirname, '../bootstrap/index.html'),
+      protocol: 'file:',
+      slashes: true,
+    }),
+  );
+
+  return window;
+};
+
+const createMainWindow = () => {
   const { width, height } = localConfig.get('windowBounds');
 
-  mainWindow = new BrowserWindow({
+  const window = new BrowserWindow({
     width: width,
     height: height,
     webPreferences: {
@@ -17,30 +41,35 @@ function createWindow() {
     },
   });
 
-  if (process.env.NODE_ENV === 'development') {
-    mainWindow.loadURL(`http://localhost:4000`);
-  } else {
-    mainWindow.loadURL(
-      url.format({
+  const windowURL = isProduction
+    ? url.format({
         pathname: path.join(__dirname, 'client/index.html'),
         protocol: 'file:',
         slashes: true,
-      }),
-    );
+      })
+    : 'http://localhost:4000';
+
+  window.loadURL(windowURL);
+
+  window.on('resize', () => {
+    const { width, height } = window.getBounds();
+    localConfig.set('windowBounds', { width, height });
+  });
+
+  return window;
+};
+
+app.on('ready', () => {
+  if (isProduction) {
+    const bootstrapWindow = createBootstrapWindow();
+
+    ipc.once('bootstrap-finished', (event, success: boolean) => {
+      if (success) createMainWindow();
+      bootstrapWindow.close();
+    });
+  } else {
+    createMainWindow();
   }
-
-  mainWindow.on('resize', () => {
-    if (mainWindow) {
-      const { width, height } = mainWindow.getBounds();
-      localConfig.set('windowBounds', { width, height });
-    }
-  });
-
-  mainWindow.on('closed', () => {
-    mainWindow = null;
-  });
-}
-
-app.on('ready', createWindow);
+});
 
 app.allowRendererProcessReuse = true;

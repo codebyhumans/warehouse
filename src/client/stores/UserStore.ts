@@ -1,6 +1,6 @@
 import { observable, action, computed } from 'mobx';
 import { authService } from '@client/services/auth-service';
-import { IUser } from '@db/types/user';
+import { IUser } from '@common/database/types/user';
 
 export interface IUserStore {
   signIn: (userId: number, password: string, remember: boolean) => Promise<Boolean>;

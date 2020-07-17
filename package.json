@@ -1,26 +1,37 @@
 {
   "name": "anchor-crm",
   "version": "0.0.1",
-  "main": "dist/main.js",
+  "main": "dist/electron",
   "author": "https://github.com/codebyhumans",
   "license": "MIT",
   "private": true,
   "scripts": {
-    "dev:electron": "cross-env NODE_ENV=development webpack --config configs/webpack.electron.config.js --mode development && electron .",
-    "dev:react": "cross-env NODE_ENV=development webpack-dev-server --config configs/webpack.react.config.js --mode development --watch",
+    "dev:electron": "cross-env NODE_ENV=development webpack --config configs/webpack.electron.js --mode development && electron .",
+    "dev:react": "cross-env NODE_ENV=development webpack-dev-server --config configs/webpack.react.js --mode development --watch",
+    "dev:bootstrap": "cross-env NODE_ENV=development webpack --config configs/webpack.bootstrap.js --mode development",
     "build:electron": "NODE_ENV=production webpack --config configs/webpack.electron.config.js --mode production",
     "build:react": "NODE_ENV=production webpack --config configs/webpack.react.config.js --mode production",
     "build": "npm run build:electron && npm run build:react",
-    "pack": "electron-builder --dir"
+    "pack": "electron-builder --dir",
+    "publish": "electron-builder --mac -p always"
   },
+  "release": "build",
   "build": {
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "suhodolskiy",
+        "repo": "test-repo"
+      }
+    ],
     "directories": {
-      "output": "dist/"
+      "output": "build/"
     },
     "files": [
-      "dist/**/*",
-      "package.json"
+      "node_modules",
+      "dist/**/*"
     ],
+    "asar": false,
     "appId": "com.example.app"
   },
   "devDependencies": {

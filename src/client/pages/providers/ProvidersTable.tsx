@@ -4,7 +4,7 @@ import { Table, useTableProcessor } from '@client/components/Table';
 import { useModals } from '@client/components/Modals';
 import { ProviderModal } from './ProviderModal';
 import Button from '@atlaskit/button';
-import { IProvider } from '@db/types/provider';
+import { IProvider } from '@common/database/types/provider';
 
 export const ProvidersTable: React.FC = () => {
   const { setModal } = useModals();

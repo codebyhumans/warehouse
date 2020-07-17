@@ -2,7 +2,7 @@ import React from 'react';
 
 import Select, { ValueType } from '@atlaskit/select';
 import { Field, HelperMessage } from '@atlaskit/form';
-import { IUser } from '@db/types/user';
+import { IUser } from '@common/database/types/user';
 
 export interface IUserSelectOption {
   label: string;
