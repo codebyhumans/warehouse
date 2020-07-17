@@ -4,23 +4,28 @@ import Button, { ButtonGroup } from '@atlaskit/button';
 import { Container } from '@client/theme/grid';
 
 import { ProvidersTable } from './ProvidersTable';
+import { ProviderModal } from './ProviderModal';
 import { useModals } from '@client/components/Modals';
 
 const ActionsContent: React.FC = () => {
   const { setModal } = useModals();
 
+  const handleOnClick = () => {
+    setModal(() => <ProviderModal />);
+  };
+
   return (
     <ButtonGroup>
-      <Button appearance="primary">Добавить поставщика</Button>
+      <Button appearance="primary" onClick={handleOnClick}>
+        Добавить поставщика
+      </Button>
     </ButtonGroup>
   );
 };
 
-export const ProvidersPage: React.FC = () => {
-  return (
-    <Container>
-      <PageHeader actions={<ActionsContent />}>Поставщики</PageHeader>
-      <ProvidersTable />
-    </Container>
-  );
-};
+export const ProvidersPage: React.FC = () => (
+  <Container>
+    <PageHeader actions={<ActionsContent />}>Поставщики</PageHeader>
+    <ProvidersTable />
+  </Container>
+);
