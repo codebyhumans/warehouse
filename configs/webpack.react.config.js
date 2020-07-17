@@ -1,7 +1,7 @@
-const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
 const aliases = require('./aliases.config');
+const path = require('path');
 
 module.exports = {
   externals: [nodeExternals()],
@@ -33,13 +33,13 @@ module.exports = {
     publicPath: '/',
   },
   output: {
-    path: path.resolve(__dirname, './dist/client'),
+    path: path.resolve(__dirname, '../dist/client'),
     filename: 'js/[name].js',
     publicPath: './',
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './index.html',
+      template: path.resolve(__dirname, '../src/client/index.html'),
       filename: './index.html',
     }),
   ],

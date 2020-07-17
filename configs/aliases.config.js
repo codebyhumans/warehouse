@@ -9,12 +9,10 @@ const aliases = {
 
 module.exports = {
   webpack: aliases,
-  jest: {},
 };
 
 for (const alias in aliases) {
   const aliasTo = aliases[alias];
 
-  module.exports.webpack[alias] = path.resolve(__dirname, aliasTo);
-  module.exports.jest[`^${alias}/(.*)$`] = `<rootDir>/${aliasTo}/$1`;
+  module.exports.webpack[alias] = path.resolve(__dirname, '../', aliasTo);
 }
