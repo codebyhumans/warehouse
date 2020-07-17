@@ -1,12 +1,12 @@
 import { machineIdSync } from 'node-machine-id';
-import { User } from '@prisma/client';
 import bcrypt from 'bcrypt';
 
 import { configService } from './config-service';
 import { usersService } from './users-service';
+import { IUser } from '@db/types/user';
 
 class AuthService {
-  async authentication(): Promise<User | null> {
+  async authentication(): Promise<IUser | undefined> {
     const session = await configService.get<{
       userId: number;
       machineId: string;
@@ -15,13 +15,13 @@ class AuthService {
 
     if (!session || session.machineId !== machineId) {
       configService.delete('session');
-      return null;
+      return;
     }
 
     return usersService.getUserById(session.userId);
   }
 
-  async authorize(userId: number, password: string, remember: boolean): Promise<User | undefined> {
+  async authorize(userId: number, password: string, remember: boolean): Promise<IUser | undefined> {
     const user = await usersService.getUserById(userId);
 
     if (user && bcrypt.compareSync(password, user.password)) {

@@ -1,18 +1,18 @@
 import { observable, action, computed } from 'mobx';
 import { authService } from '@client/services/auth-service';
-import { User } from '@prisma/client';
+import { IUser } from '@db/types/user';
 
 export interface IUserStore {
   signIn: (userId: number, password: string, remember: boolean) => Promise<Boolean>;
   authentication: () => any;
   isAuthorized: boolean;
   loadedUser?: boolean;
-  currentUser?: User;
+  currentUser?: IUser;
 }
 
 export class UserStore implements IUserStore {
   @observable
-  currentUser?: User;
+  currentUser?: IUser;
 
   @computed
   get isAuthorized() {

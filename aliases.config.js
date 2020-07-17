@@ -4,6 +4,7 @@ const aliases = {
   '@electron': 'src/electron',
   '@client': 'src/client',
   '@common': 'src/common',
+  '@db': 'src/database',
 };
 
 module.exports = {

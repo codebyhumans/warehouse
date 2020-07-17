@@ -8,8 +8,6 @@ interface ITableProcessorOptions<T extends object> {
   columnOptions?: {};
 }
 
-const tableCache = {};
-
 const getInitialState = (tableName: string) => {
   const state: { [key: string]: any } = {};
 

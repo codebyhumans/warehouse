@@ -3,14 +3,14 @@ import { unitsService } from '@client/services/units-service';
 import { Table, useTableProcessor } from '@client/components/Table';
 import { useModals } from '@client/components/Modals';
 import { UnitManageModal } from './UnitManageModal';
-import { Unit } from '@prisma/client';
+import { IUnit } from '@db/types/unit';
 
 export const UnitsTable: React.FC = () => {
   const modals = useModals();
 
   const openUnitManageModal = (id: number) => modals.setModal(() => <UnitManageModal id={id} />);
 
-  const { settings } = useTableProcessor<Unit>(unitsService.getAllUnits, {
+  const { settings } = useTableProcessor<IUnit>(unitsService.getAllUnits, {
     name: 'units',
     columns: [
       {

@@ -4,13 +4,11 @@ import { UsersStore, IUsersStore } from './usersStore';
 import { IUserStore, UserStore } from './UserStore';
 
 export interface IAppStore {
-  // configStore: IConfigStore;
   usersStore: IUsersStore;
   userStore: IUserStore;
 }
 
 export class AppStore implements IAppStore {
-  // configStore = new ConfigStore();
   usersStore = new UsersStore();
   userStore = new UserStore();
 }

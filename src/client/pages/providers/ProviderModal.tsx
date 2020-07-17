@@ -3,7 +3,7 @@ import { providersService } from '@client/services/providers-service';
 import { useModals } from '@client/components/Modals';
 import ModalDialog from '@atlaskit/modal-dialog';
 import Spinner from '@atlaskit/spinner';
-import { Provider } from '@prisma/client';
+import { IProvider } from '@db/types/provider';
 
 export type ProviderActions = 'info' | 'delete' | 'update';
 
@@ -15,7 +15,7 @@ interface IProviderModalProps {
 export const ProviderModal: React.FC<IProviderModalProps> = ({ id, action }) => {
   const { onClose } = useModals();
 
-  const [provider, setProvider] = useState<Provider>();
+  const [provider, setProvider] = useState<IProvider>();
 
   const loadProvider = async () => {
     const provider = await providersService.getProviderById(id);

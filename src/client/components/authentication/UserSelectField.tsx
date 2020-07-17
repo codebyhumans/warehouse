@@ -1,8 +1,8 @@
 import React from 'react';
-import { User } from '@prisma/client';
 
 import Select, { ValueType } from '@atlaskit/select';
 import { Field, HelperMessage } from '@atlaskit/form';
+import { IUser } from '@db/types/user';
 
 export interface IUserSelectOption {
   label: string;
@@ -10,7 +10,7 @@ export interface IUserSelectOption {
 }
 
 interface IUserSelectFieldProps {
-  users: User[];
+  users: IUser[];
 }
 
 export const UserSelectField: React.FC<IUserSelectFieldProps> = ({ users }) => {

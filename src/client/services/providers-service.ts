@@ -1,15 +1,13 @@
-import { FindManyProviderArgs } from '@prisma/client';
-import { prisma } from '@client/libs/prisma';
+import { IProvider } from '@db/types/provider';
+import { db } from '@db';
 
 export default class ProvidersService {
-  async getAllProviders(options?: FindManyProviderArgs) {
-    return prisma.provider.findMany(options);
+  async getAllProviders(): Promise<IProvider[]> {
+    return db<IProvider>('Provider').select('*');
   }
 
-  async getProviderById(id: number) {
-    return prisma.provider.findOne({
-      where: { id },
-    });
+  async getProviderById(id: number): Promise<IProvider | undefined> {
+    return db<IProvider>('Provider').where({ id }).first();
   }
 }
 

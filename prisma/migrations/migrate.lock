@@ -1,7 +1,0 @@
-# Prisma Migrate lockfile v1
-
-20200630192116-first-schema
-20200704231422-config
-20200708161411-add-id-column-to-config-table
-20200708161547-add-id-column-to-config-table
-20200708163223-add-config-table

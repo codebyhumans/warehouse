@@ -1,4 +1,4 @@
-import { prisma } from '@client/libs/prisma';
+import { db } from '@db';
 
 type ConfigValueType = 'json';
 
@@ -22,11 +22,7 @@ class ConfigService {
   }
 
   async get<T>(key: string): Promise<T | undefined> {
-    const config = await prisma.config.findOne({
-      where: {
-        key,
-      },
-    });
+    const config = await db('Config').where({ key }).first();
 
     if (config) {
       return this.stringToValue<T>(config.value, config.type);
@@ -34,28 +30,19 @@ class ConfigService {
   }
 
   async delete(key: string) {
-    return prisma.config.delete({
-      where: { key },
-    });
+    return db('Config').where({ key }).delete();
   }
 
-  async set(key: string, val: any, type?: ConfigValueType) {
+  async set(key: string, val: any, type?: ConfigValueType): Promise<any> {
     const value = this.valueToString(val, type);
 
-    return prisma.config.upsert({
-      where: {
-        key,
-      },
-      create: {
-        key,
-        value,
-        type,
-      },
-      update: {
-        value,
-        type,
-      },
-    });
+    await db.raw(`
+      INSERT INTO Config (key, type, value) VALUES ('${key}', '${type}', '${value}')
+        ON CONFLICT (key) DO UPDATE
+          SET type = '${type}', value = '${value}'
+    `);
+
+    return val;
   }
 }
 

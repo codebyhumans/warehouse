@@ -4,8 +4,7 @@ import ModalDialog from '@atlaskit/modal-dialog';
 
 import { UnitForm } from './UnitForm';
 import { unitsService } from '@client/services/units-service';
-import { Unit } from '@prisma/client';
-import { Loading } from '@client/components/Loading';
+import { IUnit } from '@db/types/unit';
 
 interface IProps {
   onSuccess?: () => void;
@@ -15,7 +14,7 @@ interface IProps {
 export const UnitManageModal: React.FC<IProps> = ({ id }) => {
   const { onClose } = useModals();
 
-  const [unit, setUnit] = useState<Unit>();
+  const [unit, setUnit] = useState<IUnit>();
   const [loading, setLoading] = useState<boolean>(false);
 
   const loadProvider = async () => {
