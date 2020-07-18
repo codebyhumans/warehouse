@@ -1,4 +1,5 @@
 const WebpackDevServer = require('webpack-dev-server');
+const exec = require('child_process').exec;
 const inquirer = require('inquirer');
 const webpack = require('webpack');
 
@@ -40,6 +41,8 @@ const watchCompile = (webpackConfig, options) => {
       if (err) {
         reject(err);
       }
+
+      resolve();
     });
   });
 };
@@ -59,6 +62,11 @@ const watchCompile = (webpackConfig, options) => {
       when(answers) {
         return answers.mode === 'development';
       },
+    },
+    {
+      message: 'Start electron?',
+      name: 'electron',
+      type: 'confirm',
     },
   ]);
 
@@ -84,4 +92,8 @@ const watchCompile = (webpackConfig, options) => {
   }
 
   await Promise.all(compilers);
+
+  if (answers.electron) {
+    exec('electron .');
+  }
 })();
