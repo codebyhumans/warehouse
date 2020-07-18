@@ -1,13 +1,8 @@
 const WebpackDevServer = require('webpack-dev-server');
-const exec = require('child_process').exec;
 const inquirer = require('inquirer');
 const webpack = require('webpack');
 
-const webpackBootstrapConfig = require('../configs/webpack.bootstrap');
-const webpackElectronConfig = require('../configs/webpack.electron');
-const webpackClientConfig = require('../configs/webpack.client');
-
-const staticCompile = (webpackConfig, options) => {
+const staticBuild = (webpackConfig, options) => {
   return new Promise((resolve, reject) => {
     const config = webpackConfig(options);
     const compiler = webpack(config);
@@ -30,7 +25,7 @@ const staticCompile = (webpackConfig, options) => {
   });
 };
 
-const watchCompile = (webpackConfig, options) => {
+const watchBuild = (webpackConfig, options) => {
   return new Promise((resolve, reject) => {
     const config = webpackConfig(options);
     const compiler = webpack(config);
@@ -71,29 +66,21 @@ const watchCompile = (webpackConfig, options) => {
   ]);
 
   process.env.NODE_ENV = answers.mode;
-  const options = { mode: answers.mode };
   const isProduction = process.env.NODE_ENV === 'production';
 
-  const compilers = [
-    staticCompile(webpackElectronConfig, {
-      ...options,
+  await Promise.all([
+    staticBuild(require('../configs/webpack.electron'), {
       plugins: [
         new webpack.DefinePlugin({
           'process.env.BOOTSTRAP': answers.bootstrap,
         }),
       ],
     }),
-  ];
-
-  if (isProduction) {
-    compilers.push(staticCompile(webpackBootstrapConfig, options), staticCompile(webpackClientConfig, options));
-  } else {
-    compilers.push(watchCompile(webpackBootstrapConfig, options), watchCompile(webpackClientConfig, options));
-  }
-
-  await Promise.all(compilers);
+    [isProduction ? staticBuild : watchBuild][0](require('../configs/webpack.bootstrap')),
+    [isProduction ? staticBuild : watchBuild][0](require('../configs/webpack.client')),
+  ]);
 
   if (answers.electron) {
-    exec('electron .');
+    require('child_process').exec('electron .');
   }
 })();

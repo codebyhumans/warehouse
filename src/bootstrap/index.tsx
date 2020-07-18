@@ -4,9 +4,11 @@ import { render } from 'react-dom';
 
 const Bootstrap = () => {
   useEffect(() => {
+    ipc.send('bootstrap-ready-to-show');
+
     setTimeout(() => {
       ipc.send('bootstrap-finished', true);
-    }, 2000);
+    }, 4000);
   }, []);
 
   return <div>Bootstrap</div>;

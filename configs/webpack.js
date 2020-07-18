@@ -1,5 +1,4 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const nodeExternals = require('webpack-node-externals');
 const aliases = require('./aliases');
 const path = require('path');
 
@@ -12,6 +11,7 @@ module.exports = {
       extensions: ['.tsx', '.ts', '.js'],
       alias: aliases.webpack,
     },
+    mode: process.env.NODE_ENV,
     target: 'electron-main',
     devtool: !isProduction && 'source-map',
     module: {

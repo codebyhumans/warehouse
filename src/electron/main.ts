@@ -15,6 +15,7 @@ const createBootstrapWindow = () => {
     resizable: false,
     movable: false,
     center: true,
+    show: false,
     height: 270,
     width: 450,
   });
@@ -29,13 +30,18 @@ const createBootstrapWindow = () => {
 
   window.loadURL(windowURL);
 
+  ipc.once('bootstrap-ready-to-show', () => {
+    window.show();
+  });
+
   return window;
 };
 
-const createMainWindow = () => {
+const createClientWindow = () => {
   const { width, height } = localConfig.get('windowBounds');
 
   const window = new BrowserWindow({
+    show: false,
     width: width,
     height: height,
     webPreferences: {
@@ -53,6 +59,10 @@ const createMainWindow = () => {
 
   window.loadURL(windowURL);
 
+  ipc.once('client-ready-to-show', () => {
+    window.show();
+  });
+
   window.on('resize', () => {
     const { width, height } = window.getBounds();
     localConfig.set('windowBounds', { width, height });
@@ -66,11 +76,11 @@ app.on('ready', () => {
     const bootstrapWindow = createBootstrapWindow();
 
     ipc.once('bootstrap-finished', (event, success: boolean) => {
-      if (success) createMainWindow();
+      if (success) createClientWindow();
       bootstrapWindow.close();
     });
   } else {
-    createMainWindow();
+    createClientWindow();
   }
 });
 
