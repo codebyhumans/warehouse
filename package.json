@@ -1,6 +1,6 @@
 {
   "name": "anchor-crm",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "main": "dist/electron/index.js",
   "author": "https://github.com/codebyhumans",
   "license": "MIT",

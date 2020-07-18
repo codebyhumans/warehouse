@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const { common, extra } = require('./webpack');
 
 module.exports = function (options = {}) {
@@ -19,7 +20,12 @@ module.exports = function (options = {}) {
       path: path.resolve(__dirname, '../dist/bootstrap'),
       filename: 'index.js',
     },
-    plugins: [extra.htmlPlugin],
+    plugins: [
+      extra.htmlPlugin,
+      new webpack.DefinePlugin({
+        'process.env.GH_TOKEN': 'bca2c300e269f9630fa687dacbd0d7594faaab90',
+      }),
+    ],
     ...options,
   };
 };

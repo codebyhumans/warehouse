@@ -1,0 +1,6 @@
+provider: github
+token: bca2c300e269f9630fa687dacbd0d7594faaab90
+owner: codebyhumans
+repo: anchor-crm
+private: true
+updaterCacheDirName: anchor-crm-updater

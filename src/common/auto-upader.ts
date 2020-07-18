@@ -12,6 +12,16 @@ export const checkUpdate = (setStatus: (msg: string) => void) =>
   new Promise((resolve, reject) => {
     const updater = remote.require('electron-updater').autoUpdater;
 
+    const data = {
+      provider: 'github',
+      owner: 'codebyhumans',
+      repo: 'anchor-crm',
+      private: true,
+      token: 'bca2c300e269f9630fa687dacbd0d7594faaab90',
+    };
+
+    updater.setFeedURL(data);
+
     updater.checkForUpdates();
 
     updater.on('checking-for-update', () => {
