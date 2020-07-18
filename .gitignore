@@ -21,3 +21,4 @@ buck-out/
 # App
 dist/
 build/
+electron-builder.env

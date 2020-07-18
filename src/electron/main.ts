@@ -19,13 +19,15 @@ const createBootstrapWindow = () => {
     width: 450,
   });
 
-  window.loadURL(
-    url.format({
-      pathname: path.join(__dirname, '../bootstrap/index.html'),
-      protocol: 'file:',
-      slashes: true,
-    }),
-  );
+  const windowURL = isProduction
+    ? url.format({
+        pathname: path.join(__dirname, '../bootstrap/index.html'),
+        protocol: 'file:',
+        slashes: true,
+      })
+    : 'http://localhost:4001';
+
+  window.loadURL(windowURL);
 
   return window;
 };
@@ -43,7 +45,7 @@ const createMainWindow = () => {
 
   const windowURL = isProduction
     ? url.format({
-        pathname: path.join(__dirname, 'client/index.html'),
+        pathname: path.join(__dirname, '../client/index.html'),
         protocol: 'file:',
         slashes: true,
       })
@@ -60,7 +62,7 @@ const createMainWindow = () => {
 };
 
 app.on('ready', () => {
-  if (isProduction) {
+  if (isProduction || process.env.BOOTSTRAP) {
     const bootstrapWindow = createBootstrapWindow();
 
     ipc.once('bootstrap-finished', (event, success: boolean) => {
