@@ -10,5 +10,6 @@ module.exports = {
     output: 'build/',
   },
   files: ['dist/**/*'],
+  extraResources: ['app-update.yml'],
   appId: 'com.example.app',
 };
