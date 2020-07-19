@@ -1,6 +1,6 @@
 {
   "name": "anchor-crm",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "main": "dist/electron/index.js",
   "author": "https://github.com/codebyhumans",
   "license": "MIT",
@@ -9,7 +9,7 @@
     "electron": "electron .",
     "start": "node scripts/start.js",
     "pack": "electron-builder --dir --config configs/electron-builder.js",
-    "publish": "electron-builder --config configs/electron-builder.js --mac -p always"
+    "publish": "electron-builder --config configs/electron-builder.js --mac --win -p always"
   },
   "release": "build",
   "dependencies": {
