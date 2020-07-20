@@ -10,6 +10,7 @@ import { StartScreen } from '@client/components/StartScreen';
 import { ProvidersPage } from '@client/pages/providers/ProvidersPage';
 import { UsersPage } from '@client/pages/users/UsersPage';
 import { UnitsPage } from '@client/pages/units/UnitsPage';
+import { WarehousePage } from './pages/warehouse/WarehousePage';
 
 export const Routes: React.FC = () => {
   const history = useHistory();
@@ -27,9 +28,10 @@ export const Routes: React.FC = () => {
             </Switch>
           </SimpleLayout>
         </Route>
-        <Route path={['/users', '/providers', '/units']}>
+        <Route path={['/warehouse', '/users', '/providers', '/units']}>
           <BasicLayout>
             <Switch>
+              <Route path="/warehouse" component={WarehousePage} />
               <Route path="/users" component={UsersPage} />
               <Route path="/providers" component={ProvidersPage} />
               <Route path="/units" component={UnitsPage} />
