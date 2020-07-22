@@ -1,11 +1,10 @@
-const path = require('path');
-const webpack = require('webpack');
 const { common, extra } = require('./webpack');
+const path = require('path');
 
 module.exports = function (options = {}) {
   return {
     ...common,
-    externals: extra.external('electron'),
+    externals: extra.externalDeps('electron', 'knex'),
     entry: './src/bootstrap/index.tsx',
     target: 'electron-renderer',
     devServer: {
@@ -20,12 +19,7 @@ module.exports = function (options = {}) {
       path: path.resolve(__dirname, '../dist/bootstrap'),
       filename: 'index.js',
     },
-    plugins: [
-      extra.htmlPlugin,
-      new webpack.DefinePlugin({
-        'process.env.GH_TOKEN': 'bca2c300e269f9630fa687dacbd0d7594faaab90',
-      }),
-    ],
+    plugins: [extra.htmlPlugin('../src/bootstrap/index.html'), extra.dotenvPlugin()],
     ...options,
   };
 };

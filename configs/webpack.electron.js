@@ -1,4 +1,4 @@
-const { common } = require('./webpack');
+const { common, extra } = require('./webpack');
 const path = require('path');
 
 module.exports = function (options = {}) {

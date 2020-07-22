@@ -1,14 +1,14 @@
+import { bytesToMegaBytes } from '@common/utils';
 import { remote } from 'electron';
 
 interface ProgressInfo {
-  total: number;
-  delta: number;
-  transferred: number;
-  percent: number;
   bytesPerSecond: number;
+  percent: number;
 }
 
-export const checkUpdate = (setStatus: (msg: string) => void) =>
+type SetStatus = (msg: string) => void;
+
+export const checkUpdate = (setStatus: SetStatus) =>
   new Promise((resolve, reject) => {
     const updater = remote.require('electron-updater').autoUpdater;
 
@@ -17,7 +17,7 @@ export const checkUpdate = (setStatus: (msg: string) => void) =>
       owner: 'codebyhumans',
       repo: 'anchor-crm',
       private: true,
-      token: 'bca2c300e269f9630fa687dacbd0d7594faaab90',
+      token: process.env.GH_TOKEN,
     };
 
     updater.setFeedURL(data);
@@ -25,27 +25,27 @@ export const checkUpdate = (setStatus: (msg: string) => void) =>
     updater.checkForUpdates();
 
     updater.on('checking-for-update', () => {
-      setStatus('Проверка наличия обновлений...');
+      setStatus('Проверка наличия обновлений');
     });
 
     updater.on('update-available', () => {
-      setStatus('Обновление доступно.');
+      setStatus('Обновление доступно');
     });
 
     updater.on('update-not-available', () => {
-      setStatus('Обновление недоступно.');
       resolve();
     });
 
-    updater.on('error', (err: any) => {
-      setStatus(`Ошибка при обновление: ${err}`);
-      reject();
+    updater.on('error', (err: Error) => {
+      setStatus(`Ошибка при обновление: ${err.message}`);
+      reject(err);
     });
 
     updater.on('download-progress', (progress: ProgressInfo) => {
-      setStatus(
-        `Скорость загрузки: ${progress.bytesPerSecond}. Загружено ${progress.percent}% (${progress.transferred}/${progress.total})`,
-      );
+      const speed = bytesToMegaBytes(progress.bytesPerSecond);
+      const loaded = progress.percent.toFixed(0);
+
+      setStatus(`Скорость загрузки: ${speed}мб/сек. Загружено ${loaded}%`);
     });
 
     updater.on('update-downloaded', () => {

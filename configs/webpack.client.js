@@ -4,7 +4,7 @@ const { common, extra } = require('./webpack');
 module.exports = function (options = {}) {
   return {
     ...common,
-    externals: extra.external('bcrypt', 'knex', 'electron'),
+    externals: extra.externalDeps('knex', 'electron', 'bcrypt'),
     entry: './src/client/index.tsx',
     target: 'electron-renderer',
     devServer: {
@@ -20,7 +20,7 @@ module.exports = function (options = {}) {
       filename: 'index.js',
       publicPath: './',
     },
-    plugins: [extra.htmlPlugin],
+    plugins: [extra.htmlPlugin('../src/client/index.html')],
     ...options,
   };
 };

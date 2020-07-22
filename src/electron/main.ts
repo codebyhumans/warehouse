@@ -10,14 +10,15 @@ const createBootstrapWindow = () => {
     webPreferences: {
       nodeIntegration: true,
     },
+    show: !isProduction,
     maximizable: false,
     minimizable: false,
     resizable: false,
     movable: false,
     center: true,
-    show: false,
-    height: 270,
-    width: 450,
+    frame: false,
+    height: 250,
+    width: 410,
   });
 
   const windowURL = isProduction
@@ -30,9 +31,11 @@ const createBootstrapWindow = () => {
 
   window.loadURL(windowURL);
 
-  ipc.once('bootstrap-ready-to-show', () => {
-    window.show();
-  });
+  if (isProduction) {
+    ipc.once('bootstrap-ready-to-show', () => {
+      window.show();
+    });
+  }
 
   return window;
 };
@@ -41,7 +44,7 @@ const createClientWindow = () => {
   const { width, height } = localConfig.get('windowBounds');
 
   const window = new BrowserWindow({
-    show: false,
+    show: !isProduction,
     width: width,
     height: height,
     webPreferences: {
@@ -59,9 +62,11 @@ const createClientWindow = () => {
 
   window.loadURL(windowURL);
 
-  ipc.once('client-ready-to-show', () => {
-    window.show();
-  });
+  if (isProduction) {
+    ipc.once('client-ready-to-show', () => {
+      window.show();
+    });
+  }
 
   window.on('resize', () => {
     const { width, height } = window.getBounds();

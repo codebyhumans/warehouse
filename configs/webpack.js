@@ -1,8 +1,14 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const aliases = require('./aliases');
+const webpack = require('webpack');
 const path = require('path');
 
 const isProduction = process.env.NODE_ENV === 'production';
+
+const dotenv = require('dotenv').config({
+  path: path.join(__dirname, '../.env'),
+});
 
 module.exports = {
   common: {
@@ -21,6 +27,10 @@ module.exports = {
           use: 'node-loader',
         },
         {
+          test: /\.(png|svg|jpg|gif)$/,
+          use: ['file-loader'],
+        },
+        {
           test: /\.(js|ts|tsx)$/,
           exclude: /node_modules/,
           use: {
@@ -35,7 +45,7 @@ module.exports = {
     },
   },
   extra: {
-    external(...deps) {
+    externalDeps(...deps) {
       const external = {};
 
       for (const dep of deps) {
@@ -44,9 +54,25 @@ module.exports = {
 
       return external;
     },
-    htmlPlugin: new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, '../src/common/index.html'),
-      filename: 'index.html',
-    }),
+    dotenvPlugin() {
+      const env = {};
+
+      for (const key in dotenv.parsed) {
+        env[`process.env.${key}`] = JSON.stringify(dotenv.parsed[key]);
+      }
+
+      return new webpack.DefinePlugin(env);
+    },
+    copyPlugin(patterns) {
+      return new CopyWebpackPlugin({
+        patterns,
+      });
+    },
+    htmlPlugin(p) {
+      return new HtmlWebpackPlugin({
+        template: path.resolve(__dirname, p),
+        filename: 'index.html',
+      });
+    },
   },
 };
