@@ -1,8 +1,8 @@
 exports.up = function (knex) {
   return knex.schema.createTable('config', function (table) {
-    table.string('name').unique().notNullable();
-    table.string('type').notNullable();
-    table.string('key').notNullable();
+    table.string('key').unique().notNullable();
+    table.string('type');
+    table.string('value').notNullable();
   });
 };
 

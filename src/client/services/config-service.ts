@@ -22,7 +22,7 @@ class ConfigService {
   }
 
   async get<T>(key: string): Promise<T | undefined> {
-    const config = await db('Config').where({ key }).first();
+    const config = await db('config').where({ key }).first();
 
     if (config) {
       return this.stringToValue<T>(config.value, config.type);
@@ -30,7 +30,7 @@ class ConfigService {
   }
 
   async delete(key: string) {
-    return db('Config').where({ key }).delete();
+    return db('config').where({ key }).delete();
   }
 
   async set(key: string, val: any, type?: ConfigValueType): Promise<any> {
