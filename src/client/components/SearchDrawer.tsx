@@ -1,55 +1,84 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useRef } from 'react'
+import {
+  QuickSearch,
+  ResultItemGroup,
+  ObjectResult,
+} from '@atlaskit/quick-search'
+import { Search } from '@atlaskit/atlassian-navigation'
+import debounce from 'lodash/debounce'
+import styled from 'styled-components'
+import Drawer from '@atlaskit/drawer'
 
-import Drawer from '@atlaskit/drawer';
-import { Search } from '@atlaskit/atlassian-navigation';
-import { QuickSearch, ResultItemGroup, ObjectResult } from '@atlaskit/quick-search';
-import styled from 'styled-components';
+import { categoriesService } from '@client/services/categories-service'
+import { ICategory } from '@common/database/types/category'
+import { IProduct } from '@common/database/types/product'
 
 const Result = styled.div`
   padding-left: 8px;
-`;
+`
 
 export const SearchDrawer = () => {
-  const [isOpen, setOpen] = useState(false);
+  const [categories, setCategories] = useState<ICategory[]>([])
+  const [products, setProducts] = useState<IProduct[]>([])
+  const [isLoading, setLoading] = useState(false)
+  const [isOpen, setOpen] = useState(false)
+
+  const search = useRef(
+    debounce(async (value: string) => {
+      try {
+        setLoading(true)
+
+        const categories = await categoriesService.searchCategories(value, 5)
+        setCategories(categories)
+      } finally {
+        setLoading(false)
+      }
+    }, 100),
+  )
+
+  const onSearch = (event: any) => {
+    search.current(event.target.value)
+  }
 
   const onClick = () => {
-    setOpen(!isOpen);
-  };
+    setOpen(!isOpen)
+  }
 
   const onClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
+
+  const onCategoryClick = () => {
+    // TODO: Open category in warehouse page
+  }
 
   return (
     <Fragment>
-      <Search onClick={onClick} label="Поиск" placeholder="Поиск" tooltip={() => <div />} />
+      <Search
+        onClick={onClick}
+        label="Поиск"
+        placeholder="Поиск"
+        tooltip={() => <div />}
+      />
       <Drawer isOpen={isOpen} onClose={onClose} width="wide">
-        <QuickSearch isLoading={false} placeholder="Поиск">
+        <QuickSearch
+          isLoading={isLoading}
+          placeholder="Поиск"
+          onSearchInput={onSearch}>
           <Result>
             <ResultItemGroup title="Категории">
-              <ObjectResult resultId="c-1" name="Шпатлевка" />
-              <ObjectResult resultId="c-2" name="Краска" />
-            </ResultItemGroup>
-            <ResultItemGroup title="Шпатлевка">
-              <ObjectResult
-                resultId="p-1"
-                name="Шпатлевка ilmax 6440"
-                containerName="финишная, полимерная основа, слой: 3 мм"
-              />
-              <ObjectResult
-                resultId="p-2"
-                name="Шпатлевка Ceresit CT 126. Гипсовая шпатлевка «старт-финиш»"
-                containerName="финишная, гипсовая основа, слой: 10 мм"
-              />
-              <ObjectResult
-                resultId="p-3"
-                name="Шпатлевка Sniezka Acryl-Putz Start (Польша, 20 кг)"
-                containerName="выравнивающая/финишная, гипсовая основа, слой: 30 мм"
-              />
+              {categories.map(({ id, name }, idx) => (
+                <ObjectResult
+                  resultId={id}
+                  key={idx}
+                  name={name}
+                  onClick={onCategoryClick}
+                />
+              ))}
             </ResultItemGroup>
           </Result>
         </QuickSearch>
       </Drawer>
     </Fragment>
-  );
-};
+  )
+}
