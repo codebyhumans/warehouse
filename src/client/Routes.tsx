@@ -1,20 +1,28 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Switch, Redirect, useHistory } from 'react-router-dom';
+import React from 'react'
+import {
+  BrowserRouter as Router,
+  Route,
+  Switch,
+  Redirect,
+} from 'react-router-dom'
 
-import { SimpleLayout } from '@client/layouts/SimpleLayout';
-import { BasicLayout } from '@client/layouts/BasicLayout';
+import { useHistory } from 'react-router'
 
-import { SignIn } from '@client/components/authentication/SignIn';
-import { StartScreen } from '@client/components/StartScreen';
+import { SimpleLayout } from '@client/layouts/SimpleLayout'
+import { BasicLayout } from '@client/layouts/BasicLayout'
 
-import { ProvidersPage } from '@client/pages/providers/ProvidersPage';
-import { UsersPage } from '@client/pages/users/UsersPage';
-import { UnitsPage } from '@client/pages/units/UnitsPage';
-import { WarehousePage } from './pages/warehouse/WarehousePage';
+import { StartScreen } from '@client/components/StartScreen'
+import { SignIn } from '@client/components/authentication/SignIn'
+
+import { ProvidersPage } from '@client/pages/providers/ProvidersPage'
+import { WarehousePage } from './pages/warehouse/WarehousePage'
+import { UsersPage } from '@client/pages/users/UsersPage'
+import { UnitsPage } from '@client/pages/units/UnitsPage'
 
 export const Routes: React.FC = () => {
-  const history = useHistory();
-  history.replace('/');
+  const history = useHistory()
+
+  history.replace('/')
 
   return (
     <Router>
@@ -40,5 +48,5 @@ export const Routes: React.FC = () => {
         </Route>
       </Switch>
     </Router>
-  );
-};
+  )
+}

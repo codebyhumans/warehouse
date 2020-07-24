@@ -1,28 +1,38 @@
-import React from 'react';
-import PageHeader from '@atlaskit/page-header';
-import Button, { ButtonGroup } from '@atlaskit/button';
-import { Container } from '@client/theme/grid';
+import React from 'react'
+import PageHeader from '@atlaskit/page-header'
+import { Container } from '@client/theme/grid'
+import Button, { ButtonGroup } from '@atlaskit/button'
 
-import { UnitsTable } from './UnitsTable';
-import { useModals } from '@client/components/Modals';
-import { UnitManageModal } from './UnitManageModal';
+import { useModals } from '@client/components/Modals'
+import { Table } from '@client/components/Table'
+import { useUnitsTable } from './UnitsTableProcessor'
+import { UnitManageModal } from './UnitManageModal'
 
-const ActionsContent: React.FC = () => {
-  const { setModal } = useModals();
+const ActionsContent: React.FC<{ refresh: () => void }> = (props) => {
+  const { openModal } = useModals()
 
   return (
     <ButtonGroup>
-      <Button appearance="primary" onClick={() => setModal(() => <UnitManageModal />)}>
+      <Button
+        appearance="primary"
+        onClick={() =>
+          openModal(() => <UnitManageModal onSuccess={props.refresh} />)
+        }>
         Добавить
       </Button>
-      UPDATES!!!!!
     </ButtonGroup>
-  );
-};
+  )
+}
 
-export const UnitsPage: React.FC = () => (
-  <Container>
-    <PageHeader actions={<ActionsContent />}>Единицы измерения</PageHeader>
-    <UnitsTable />
-  </Container>
-);
+export const UnitsPage: React.FC = () => {
+  const { settings, refresh } = useUnitsTable()
+
+  return (
+    <Container>
+      <PageHeader actions={<ActionsContent refresh={refresh} />}>
+        Единицы измерения
+      </PageHeader>
+      <Table {...settings} />
+    </Container>
+  )
+}

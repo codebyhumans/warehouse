@@ -1,26 +1,57 @@
-import React, { useState, createContext, useContext } from 'react';
-import { ModalTransition } from '@atlaskit/modal-dialog';
+import React, { useState, createContext, useContext } from 'react'
+import Modal, { ModalTransition } from '@atlaskit/modal-dialog'
+import {
+  AppearanceType,
+  ActionProps,
+} from '@atlaskit/modal-dialog/dist/cjs/types'
 
 interface IModalContext {
-  setModal: (modal: React.FC) => void;
-  onClose: () => void;
+  openDialog: (dialog: IDialogProps) => void
+  openModal: (modal: React.FC) => void
+  closeModal: () => void
 }
 
-let modalContext: React.Context<IModalContext>;
+interface IDialogProps {
+  heading: string
+  content?: string
+  appearance?: AppearanceType
+  actions: ActionProps[]
+}
 
-export const useModals = (): IModalContext => useContext(modalContext);
+let modalContext: React.Context<IModalContext>
+
+export const useModals = (): IModalContext => useContext(modalContext)
 
 export const Modals: React.FC = () => {
-  const [modal, setModal] = useState<React.FC | null>();
+  const [modal, openModal] = useState<React.FC | null>()
 
-  const onClose = () => {
-    setModal(null);
-  };
+  const closeModal = () => {
+    openModal(null)
+  }
+
+  const openDialog = (dialog: IDialogProps) => {
+    const actions: ActionProps[] = [{ text: 'Отмена', onClick: closeModal }]
+
+    if (dialog.actions.length) {
+      actions.unshift(...dialog.actions)
+    }
+
+    openModal(() => (
+      <Modal
+        actions={actions}
+        appearance={dialog.appearance}
+        onClose={closeModal}
+        heading={dialog.heading}>
+        {dialog.content}
+      </Modal>
+    ))
+  }
 
   modalContext = createContext<IModalContext>({
-    setModal,
-    onClose,
-  });
+    closeModal,
+    openDialog,
+    openModal,
+  })
 
-  return <ModalTransition>{modal && modal}</ModalTransition>;
-};
+  return <ModalTransition>{modal && modal}</ModalTransition>
+}

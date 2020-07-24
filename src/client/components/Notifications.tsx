@@ -1,48 +1,38 @@
-import React, { useContext, createContext, useState } from 'react';
-import styled from 'styled-components';
-import Flag, { FlagProps } from '@atlaskit/flag';
+import React, { createContext, useState, useContext, useRef } from 'react'
+import Flag, { FlagGroup, FlagProps } from '@atlaskit/flag'
 
-const FlagGroup = styled.div`
-  position: fixed;
-  bottom: 30px;
-  left: 30px;
-  z-index: 600;
+interface INotificationProps extends Omit<FlagProps, 'id'> {}
 
-  > * {
-    margin-bottom: 1em;
-  }
-`;
+const NotificationsContext = createContext<{
+  notify: (data: INotificationProps) => void
+}>({
+  notify() {},
+})
 
-interface INotificationsContext {
-  addFlag: (args: FlagProps) => void;
-  dismissFlag: () => void;
-}
+export const useNotifications = () => useContext(NotificationsContext)
 
-let notificationContext: React.Context<INotificationsContext>;
-
-export const useNotifications = (): INotificationsContext => useContext(notificationContext);
-
-export const Notifications: React.FC = () => {
-  const [flags, setFlags] = useState<FlagProps[]>([]);
-
-  const addFlag = (args: FlagProps) => {
-    setFlags([args, ...flags]);
-  };
+export const Notifications: React.FC = ({ children }) => {
+  const [notifications, setNotifications] = useState<FlagProps[]>([])
+  const count = useRef(0)
 
   const dismissFlag = () => {
-    setFlags(flags.slice(1));
-  };
+    setNotifications(notifications.slice(1))
+  }
 
-  notificationContext = createContext<INotificationsContext>({
-    addFlag,
-    dismissFlag,
-  });
+  const notify = (data: INotificationProps) => {
+    const notification = { ...data, id: count.current++, isAutoDismiss: true }
+    setNotifications([notification, ...notifications])
+  }
 
   return (
-    <FlagGroup>
-      {flags.map((flagProps) => (
-        <Flag key={flagProps.id} {...flagProps} />
-      ))}
-    </FlagGroup>
-  );
-};
+    <NotificationsContext.Provider value={{ notify }}>
+      <FlagGroup onDismissed={dismissFlag}>
+        {notifications.map((notify) => (
+          <Flag key={notify.id} {...notify} />
+        ))}
+      </FlagGroup>
+
+      {children}
+    </NotificationsContext.Provider>
+  )
+}
