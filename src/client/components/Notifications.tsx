@@ -31,7 +31,6 @@ export const Notifications: React.FC = ({ children }) => {
           <Flag key={notify.id} {...notify} />
         ))}
       </FlagGroup>
-
       {children}
     </NotificationsContext.Provider>
   )

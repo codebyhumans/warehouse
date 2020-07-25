@@ -1,38 +1,40 @@
-import React, { useEffect } from 'react';
-import { RenderItemParams, ItemId } from '@atlaskit/tree';
-import { TreeIcon } from './TreeIcon';
-import styled from 'styled-components';
-import { ICategory } from '@common/database/types/category';
+import React from 'react'
+import { RenderItemParams } from '@atlaskit/tree'
+import { TreeIcon } from './TreeIcon'
+import { ICategory } from '@common/database/types/category'
 
 interface IRenderItemProps extends RenderItemParams {
-  selectedItem?: number;
-  setSelectedItem: (itemId: number) => void;
+  selectedItem?: number
+  setSelectedItem: (itemId?: number) => void
 }
 
-export const TreeItem = ({ item, selectedItem, setSelectedItem, onExpand, onCollapse, provided }: IRenderItemProps) => {
-  const data: ICategory = item.data;
+export const TreeItem: React.FC<IRenderItemProps> = ({
+  item,
+  selectedItem,
+  setSelectedItem,
+  onExpand,
+  onCollapse,
+  provided,
+}) => {
+  const data: ICategory = item.data
+
+  const handleContextClick = (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    setSelectedItem(data.id)
+  }
 
   return (
-    <Item
-      id={`treeitem-${item.id}`}
-      onClick={() => setSelectedItem(data.id)}
-      onFocus={() => setSelectedItem(data.id)}
+    <div
+      id={item.id}
       ref={provided.innerRef}
-      aria-selected={selectedItem === data.id}
       {...provided.draggableProps}
       {...provided.dragHandleProps}
-    >
+      onClick={() => setSelectedItem(data.id)}
+      onFocus={() => setSelectedItem(data.id)}
+      onContextMenu={handleContextClick}
+      aria-selected={selectedItem === data.id}
+      className="tree-item">
       <TreeIcon item={item} onExpand={onExpand} onCollapse={onCollapse} />
       <span>{data ? data.name : 'No data'}</span>
-    </Item>
-  );
-};
-
-const Item = styled.div`
-  display: flex;
-  align-items: center;
-
-  &[aria-selected='true'] {
-    background-color: hsl(204, 80%, 50%);
-  }
-`;
+    </div>
+  )
+}

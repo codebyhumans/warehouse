@@ -20,9 +20,7 @@ export class LocalConfig {
   private readonly data: ILocalConfig
 
   constructor(private readonly options: ILocalConfigOptions) {
-    const userDataPath = (electron.app || electron.remote.app).getPath(
-      'userData',
-    )
+    const userDataPath = (electron.app || electron.remote.app).getPath('userData')
 
     this.path = path.join(userDataPath, this.options.configName + '.json')
     this.data = this.initConfig(this.options.defaults)
@@ -36,13 +34,9 @@ export class LocalConfig {
     }
   }
 
-  private saveConfig = debounce(
-    () => {
-      fs.writeFileSync(this.path, JSON.stringify(this.data))
-    },
-    this.options.debounce || 300,
-    { leading: true },
-  )
+  private saveConfig = debounce(() => {
+    fs.writeFileSync(this.path, JSON.stringify(this.data))
+  }, this.options.debounce || 300)
 
   get(key: string, defaultValue?: any): any {
     return get(this.data, key, defaultValue)
