@@ -1,0 +1,27 @@
+.tree-item {
+  display: flex;
+  height: 32px;
+  align-items: center;
+
+  &[aria-selected='true'] {
+    background-color: hsl(204, 80%, 50%);
+    border-radius: 5px;
+    color: white;
+
+    .icon-button {
+      color: white;
+    }
+  }
+}
+
+.icon-button {
+  border: none;
+  cursor: pointer;
+  background: none;
+  padding: 0;
+  margin: 0 5px;
+
+  :focus {
+    background: none;
+  }
+}

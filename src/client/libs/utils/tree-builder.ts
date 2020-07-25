@@ -1,33 +1,33 @@
-import { TreeItem, TreeData } from '@atlaskit/tree';
-import { ICategory } from '@common/database/types/category';
+import { TreeItem, TreeData, ItemId } from '@atlaskit/tree'
+import { ICategory } from '@common/database/types/category'
 
-export const createTreeData = (data: ICategory[]): TreeData => {
+export const createTreeData = (data: ICategory[], expandedNodes: ItemId[]): TreeData => {
   const rootItem: TreeItem = {
     id: 'root',
     children: [],
     hasChildren: false,
     isExpanded: false,
-  };
+  }
 
-  const items: { [key: string]: TreeItem } = {};
+  const items: { [key: string]: TreeItem } = {}
 
   for (const item of data) {
     items[item.id + ''] = {
       id: item.id + '',
       children: [],
       hasChildren: false,
-      isExpanded: false,
+      isExpanded: expandedNodes.includes(item.id + ''),
       data: item,
-    };
+    }
   }
 
   for (const item of Object.values(items)) {
-    const parentItem = item.data?.parentId ? items[item.data.parentId] : rootItem;
+    const parentItem = item.data?.parentId ? items[item.data.parentId] : rootItem
 
-    parentItem.children.push(item.id);
+    parentItem.children.push(item.id)
 
     if (!parentItem.hasChildren) {
-      parentItem.hasChildren = true;
+      parentItem.hasChildren = true
     }
   }
 
@@ -37,5 +37,5 @@ export const createTreeData = (data: ICategory[]): TreeData => {
       root: rootItem,
       ...items,
     },
-  };
-};
+  }
+}

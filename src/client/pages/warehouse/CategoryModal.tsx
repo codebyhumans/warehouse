@@ -1,36 +1,33 @@
-import React from 'react';
-import { useModals } from '@client/components/Modals';
-import ModalDialog from '@atlaskit/modal-dialog';
-import Button from '@atlaskit/button';
-import Form, { FormFooter } from '@atlaskit/form';
-import TextField from '@atlaskit/textfield';
-import { Field } from '@atlaskit/form';
-import { ICategory } from '@common/database/types/category';
-import { categoriesService } from '@client/services/categories-service';
+import React from 'react'
+import { useModals } from '@client/components/Modals'
+import ModalDialog from '@atlaskit/modal-dialog'
+import Button from '@atlaskit/button'
+import Form, { FormFooter } from '@atlaskit/form'
+import TextField from '@atlaskit/textfield'
+import { Field } from '@atlaskit/form'
+import { ICategory } from '@common/database/types/category'
+import { categoriesService } from '@client/services/categories-service'
 
 interface ICategoryModalProps {
-  parrentId?: number;
+  parentId?: number
+  reset: () => void
 }
 
-export const CategoryModal: React.FC<ICategoryModalProps> = ({ parrentId }) => {
-  const { onClose } = useModals();
+export const CategoryModal: React.FC<ICategoryModalProps> = ({ parentId, reset }) => {
+  const { closeModal } = useModals()
 
   const handleSubmit = async (data: ICategory) => {
     try {
-      if (parrentId) {
-        data.parrentId = parrentId;
-      }
-      const result = await categoriesService.createCategory(data);
-      if (!!result.length) {
-        onClose();
-      }
+      if (parentId) data.parentId = parentId
+      await categoriesService.createCategory(data)
     } finally {
-      //
+      reset()
+      closeModal()
     }
-  };
+  }
 
   return (
-    <ModalDialog heading="Добавить категорию" onClose={onClose}>
+    <ModalDialog heading="Добавить категорию" onClose={closeModal}>
       <Form<ICategory> onSubmit={handleSubmit}>
         {({ formProps }) => (
           <form {...formProps}>
@@ -46,5 +43,5 @@ export const CategoryModal: React.FC<ICategoryModalProps> = ({ parrentId }) => {
         )}
       </Form>
     </ModalDialog>
-  );
-};
+  )
+}

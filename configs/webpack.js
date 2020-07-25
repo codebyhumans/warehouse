@@ -1,14 +1,14 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const aliases = require('./aliases');
-const webpack = require('webpack');
-const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const aliases = require('./aliases')
+const webpack = require('webpack')
+const path = require('path')
 
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.env.NODE_ENV === 'production'
 
 const dotenv = require('dotenv').config({
   path: path.join(__dirname, '../.env'),
-});
+})
 
 module.exports = {
   common: {
@@ -41,38 +41,42 @@ module.exports = {
             },
           },
         },
+        {
+          test: /\.s[ac]ss$/i,
+          use: ['style-loader', 'css-loader', 'sass-loader'],
+        },
       ],
     },
   },
   extra: {
     externalDeps(...deps) {
-      const external = {};
+      const external = {}
 
       for (const dep of deps) {
-        external[dep] = `commonjs ${dep}`;
+        external[dep] = `commonjs ${dep}`
       }
 
-      return external;
+      return external
     },
     dotenvPlugin() {
-      const env = {};
+      const env = {}
 
       for (const key in dotenv.parsed) {
-        env[`process.env.${key}`] = JSON.stringify(dotenv.parsed[key]);
+        env[`process.env.${key}`] = JSON.stringify(dotenv.parsed[key])
       }
 
-      return new webpack.DefinePlugin(env);
+      return new webpack.DefinePlugin(env)
     },
     copyPlugin(patterns) {
       return new CopyWebpackPlugin({
         patterns,
-      });
+      })
     },
     htmlPlugin(p) {
       return new HtmlWebpackPlugin({
         template: path.resolve(__dirname, p),
         filename: 'index.html',
-      });
+      })
     },
   },
-};
+}
