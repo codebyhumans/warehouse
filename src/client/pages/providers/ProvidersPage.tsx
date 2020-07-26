@@ -3,29 +3,36 @@ import PageHeader from '@atlaskit/page-header'
 import Button, { ButtonGroup } from '@atlaskit/button'
 import { Container } from '@client/theme/grid'
 
-import { ProvidersTable } from './ProvidersTable'
-import { ProviderModal } from './ProviderModal'
+import { useProvidersTable } from './ProvidersTableProcessor'
+import { ProviderManageModal } from './ProviderManageModal'
 import { useModals } from '@client/components/Modals'
+import { Table } from '@client/components/Table'
 
-const ActionsContent: React.FC = () => {
+const ActionsContent: React.FC<{ refresh: () => void }> = ({ refresh }) => {
   const { openModal } = useModals()
 
   const handleOnClick = () => {
-    openModal(() => <ProviderModal />)
+    openModal(() => <ProviderManageModal onSuccess={refresh} />)
   }
 
   return (
     <ButtonGroup>
       <Button appearance="primary" onClick={handleOnClick}>
-        Добавить поставщика
+        Добавить
       </Button>
     </ButtonGroup>
   )
 }
 
-export const ProvidersPage: React.FC = () => (
-  <Container>
-    <PageHeader actions={<ActionsContent />}>Поставщики</PageHeader>
-    <ProvidersTable />
-  </Container>
-)
+export const ProvidersPage: React.FC = () => {
+  const { settings, refresh } = useProvidersTable()
+
+  return (
+    <Container>
+      <PageHeader actions={<ActionsContent refresh={refresh} />}>
+        Поставщики
+      </PageHeader>
+      <Table {...settings} />
+    </Container>
+  )
+}

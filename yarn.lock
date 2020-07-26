@@ -440,6 +440,21 @@
     "@emotion/core" "^10.0.9"
     tslib "^1.9.3"
 
+"@atlaskit/table-tree@^9.0.0":
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/table-tree/-/table-tree-9.0.0.tgz#3ebc16e35a61bc0868bfe35fff0797777f28d66f"
+  integrity sha512-0P14B+K92Sx1MCyimhLDUp1j6RzYvZBTZNHQEN6F6KXIu+VrVBFBYVVBp4TgFiAvsp1X2thRxb67jRRxXF4bNA==
+  dependencies:
+    "@atlaskit/analytics-next" "^7.0.0"
+    "@atlaskit/button" "^14.0.0"
+    "@atlaskit/icon" "^21.0.0"
+    "@atlaskit/spinner" "^15.0.0"
+    "@atlaskit/theme" "^10.0.0"
+    "@babel/runtime" "^7.0.0"
+    lodash.get "^4.4.2"
+    lodash.set "^4.3.2"
+    prop-types "^15.5.10"
+
 "@atlaskit/tabs@12.0.0":
   version "12.0.0"
   resolved "https://registry.yarnpkg.com/@atlaskit/tabs/-/tabs-12.0.0.tgz#dc6090806bc7dbd4085fb1fdc76b09706eec1292"
@@ -4775,6 +4790,11 @@ lodash.debounce@^4.0.8:
   version "4.0.8"
   resolved "https://registry.yarnpkg.com/lodash.debounce/-/lodash.debounce-4.0.8.tgz#82d79bff30a67c4005ffd5e2515300ad9ca4d7af"
   integrity sha1-gteb/zCmfEAF/9XiUVMArZyk168=
+
+lodash.get@^4.4.2:
+  version "4.4.2"
+  resolved "https://registry.yarnpkg.com/lodash.get/-/lodash.get-4.4.2.tgz#2d177f652fa31e939b4438d5341499dfa3825e99"
+  integrity sha1-LRd/ZS+jHpObRDjVNBSZ36OCXpk=
 
 lodash.isequal@^4.5.0:
   version "4.5.0"
