@@ -6,6 +6,8 @@ import {
   PrimaryButton,
 } from '@atlaskit/atlassian-navigation'
 
+import { HeaderProfile } from './HeaderProfile'
+
 import { SearchDrawer } from './SearchDrawer'
 import { useHistory, useLocation } from 'react-router'
 
@@ -44,6 +46,7 @@ export const Header = () => {
       ]}
       renderSearch={SearchDrawer}
       renderProductHome={ProductHomeExample}
+      renderProfile={HeaderProfile}
     />
   )
 }

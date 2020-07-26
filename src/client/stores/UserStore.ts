@@ -1,39 +1,54 @@
-import { observable, action, computed } from 'mobx';
-import { authService } from '@client/services/auth-service';
-import { IUser } from '@common/database/types/user';
+import { observable, action, computed } from 'mobx'
+import { authService } from '@client/services/auth-service'
+import { IUser } from '@common/database/types/user'
 
 export interface IUserStore {
-  signIn: (userId: number, password: string, remember: boolean) => Promise<Boolean>;
-  authentication: () => any;
-  isAuthorized: boolean;
-  loadedUser?: boolean;
-  currentUser?: IUser;
+  signIn: (
+    userId: number,
+    password: string,
+    remember: boolean,
+  ) => Promise<Boolean>
+  authentication: () => any
+  logout: () => any
+  isAuthorized: boolean
+  loadedUser?: boolean
+  currentUser?: IUser
 }
 
 export class UserStore implements IUserStore {
   @observable
-  currentUser?: IUser;
+  currentUser?: IUser
 
   @computed
   get isAuthorized() {
-    return !!this.currentUser;
+    return !!this.currentUser
   }
 
   @action
   authentication = async () => {
     try {
-      const user = await authService.authentication();
-      if (user) this.currentUser = user;
+      const user = await authService.authentication()
+      if (user) this.currentUser = user
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
 
   @action
-  signIn = async (userId: number, password: string, remember: boolean): Promise<boolean> => {
-    const user = await authService.authorize(userId, password, remember);
-    if (user) this.currentUser = user;
+  signIn = async (
+    userId: number,
+    password: string,
+    remember: boolean,
+  ): Promise<boolean> => {
+    const user = await authService.authorize(userId, password, remember)
+    if (user) this.currentUser = user
 
-    return !!user;
-  };
+    return !!user
+  }
+
+  @action
+  logout = async () => {
+    await authService.logout()
+    this.currentUser = undefined
+  }
 }
