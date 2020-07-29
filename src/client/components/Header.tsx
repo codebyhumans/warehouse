@@ -34,6 +34,11 @@ export const Header = () => {
           Пользователи
         </PrimaryButton>,
         <PrimaryButton
+          isHighlighted={pathname === '/roles'}
+          onClick={() => push('/roles')}>
+          Роли
+        </PrimaryButton>,
+        <PrimaryButton
           isHighlighted={pathname === '/providers'}
           onClick={() => push('/providers')}>
           Поставщики

@@ -10,8 +10,8 @@ import {
 } from '@client/services/permissions-servise'
 
 interface IProps {
-  onChange: (event: PermissionStack) => any
-  value?: number | null | undefined
+  onChange: (event: PermissionStack) => void
+  value: PermissionStack
 }
 
 export const PermissionsManageList: React.FC<IProps> = (props) => {
@@ -20,17 +20,24 @@ export const PermissionsManageList: React.FC<IProps> = (props) => {
     Object.keys(PermissionProperties).map((key) => +key),
   )
 
-  const onChange = (permission: Permission) => (event: any) =>
+  const onChange = (permission: Permission) => (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) =>
     setStack(
       event.target.checked
         ? permissionsService.addPermission(permission, stack)
-        : permissionsService.deletePermission(stack!, permission),
+        : permissionsService.deletePermission(stack, permission),
     )
 
   useEffect(() => props.onChange(stack), [stack])
 
+  useEffect(() => {
+    if (props.value !== stack) setStack(props.value)
+  }, [props.value])
+
   return (
     <>
+      {stack}
       {permissions.map((permission, idx) => (
         <Checkbox
           key={idx}

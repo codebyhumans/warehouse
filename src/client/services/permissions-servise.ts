@@ -1,9 +1,9 @@
 export enum Permission {
-  ALL = 0,
-  USERS_VIEW = 1,
-  USERS_MANAGE = 2,
-  PROVIDERS_VIEW = 4,
-  PROVIDERS_MANAGE = 8,
+  ALL = 1,
+  USERS_VIEW = 2,
+  USERS_MANAGE = 4,
+  PROVIDERS_VIEW = 8,
+  PROVIDERS_MANAGE = 16,
 }
 
 export const PermissionProperties = {
@@ -14,22 +14,23 @@ export const PermissionProperties = {
   [Permission.PROVIDERS_MANAGE]: 'Управление поставщиками',
 }
 
-export type PermissionStack = number | undefined | null
+export type PermissionStack = number
 
 export default class PermissionsService {
   private get fullStack() {
-    return Object.keys(PermissionProperties).reduce(
-      (count, permission) => (count += +permission),
-      0,
-    )
+    return Object.keys(PermissionProperties).reduce((count, permission) => {
+      if (+permission !== Permission.ALL) {
+        count += +permission
+      }
+
+      return count
+    }, 0)
   }
 
   public checkPermission(
     stack: PermissionStack,
     permission: Permission,
   ): boolean {
-    if (stack === null || stack === undefined) return false
-
     if (permission === Permission.ALL) {
       return stack === Permission.ALL
     }
@@ -39,21 +40,21 @@ export default class PermissionsService {
 
   public addPermission(
     permission: Permission,
-    stack?: PermissionStack,
+    stack: PermissionStack,
   ): PermissionStack {
-    const newStack = (stack || 0) + permission
+    if (permission === Permission.ALL) {
+      return Permission.ALL
+    }
 
-    return newStack === this.fullStack ? Permission.ALL : newStack
+    return stack + permission
   }
 
   public deletePermission(
-    stack: number,
+    stack: PermissionStack,
     permission: Permission,
   ): PermissionStack {
-    const newStack =
-      (stack === Permission.ALL ? this.fullStack : stack) - permission
-
-    return newStack === Permission.ALL ? null : newStack
+    if (permission === Permission.ALL) return this.fullStack
+    return (stack === Permission.ALL ? this.fullStack : stack) - permission
   }
 
   public getCountPermissions(stack: number): number {

@@ -26,9 +26,9 @@ class AuthService {
     password: string,
     remember: boolean,
   ): Promise<IUser | undefined> {
-    const user = await usersService.getUserById(userId)
+    const user = await usersService.getUserWithPassById(userId)
 
-    if (user && bcrypt.compareSync(password, user.password)) {
+    if (user && user.password && bcrypt.compareSync(password, user.password)) {
       if (remember) {
         await configService.set(
           'session',

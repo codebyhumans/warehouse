@@ -5,7 +5,7 @@ import Tooltip from '@atlaskit/tooltip'
 import Tag from '@atlaskit/tag'
 
 interface IProps {
-  value: Date | string | number
+  value: Date | string | number | undefined
   format?: string
   detailFormat?: string
 }

@@ -28,9 +28,10 @@ export class UserStore implements IUserStore {
   authentication = async () => {
     try {
       const user = await authService.authentication()
+      console.log(user)
       if (user) this.currentUser = user
     } catch (error) {
-      console.log(error)
+      console.error(error)
     }
   }
 
@@ -41,7 +42,11 @@ export class UserStore implements IUserStore {
     remember: boolean,
   ): Promise<boolean> => {
     const user = await authService.authorize(userId, password, remember)
-    if (user) this.currentUser = user
+
+    if (user) {
+      delete user.password
+      this.currentUser = user
+    }
 
     return !!user
   }

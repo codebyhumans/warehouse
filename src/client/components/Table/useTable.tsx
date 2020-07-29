@@ -6,7 +6,7 @@ interface ITableProcessorOptions<T extends object> {
   name: string
   columns: Column<T>[]
   columnOptions?: {}
-  onRowClick: (data: T) => void
+  onRowClick?: (data: T) => void
 }
 
 const getInitialState = (tableName: string) => {
