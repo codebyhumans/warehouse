@@ -18,10 +18,18 @@ class RolesService {
   }
 
   async updateRole(id: number, data: IRoleManageData) {
-    return db<IRole>('role').where('id', id).update(data)
+    const role = await this.getRoleById(id)
+    if (role?.system) return
+
+    return db<IRole>('role').where({ id }).update(data)
   }
 
-  async deleteRoleById(id: number) {}
+  async deleteRoleById(id: number) {
+    const role = await this.getRoleById(id)
+    if (role?.system) return
+
+    return db<IRole>('role').where({ id }).delete()
+  }
 }
 
 export const rolesService = new RolesService()

@@ -1,28 +1,31 @@
-import { observable, action } from 'mobx';
+import { observable, action } from 'mobx'
 
-import { usersService } from '../services/users-service';
-import { IUser } from '@common/database/types/user';
+import { usersService } from '../services/users-service'
+import { IUser } from '@common/database/types/user'
 
 export interface IUsersStore {
-  users: IUser[];
-  loadUsers: () => void;
+  users: IUser[]
+  loadUsers: () => void
 }
 
 export class UsersStore {
   constructor() {
-    this.loadUsers();
+    this.loadUsers()
   }
 
   @observable
-  users: IUser[] = [];
+  users: IUser[] = []
 
   @action
   loadUsers = async () => {
+    console.log('load users')
     try {
-      const users = await usersService.getAllUsers();
-      this.users = users;
+      const users = await usersService.getAllUsers()
+      console.log(users)
+      this.users = users
     } catch (error) {
+      console.log(error)
       //process error
     }
-  };
+  }
 }

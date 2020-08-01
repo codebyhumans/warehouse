@@ -1,19 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { shell } from 'electron'
 
 import ModalDialog, { ModalFooter } from '@atlaskit/modal-dialog'
-import SuccessIcon from '@atlaskit/icon/glyph/check-circle'
-import Button, { ButtonGroup } from '@atlaskit/button'
-import TableTree from '@atlaskit/table-tree'
-import Form, { Field } from '@atlaskit/form'
-import TextField from '@atlaskit/textfield'
-import { colors } from '@atlaskit/theme'
+import Button from '@atlaskit/button'
 
-import { providersService } from '@client/services/providers-service'
-import { useNotifications } from '@client/components/Notifications'
+import { PropertyList } from '@client/components/PropertyList'
 import { IProvider } from '@common/database/types/provider'
 import { useModals } from '@client/components/Modals'
-import { PropertyList } from '@client/components/PropertyList'
 
 interface IProps {
   provider: IProvider

@@ -57,7 +57,9 @@ export default class PermissionsService {
     return (stack === Permission.ALL ? this.fullStack : stack) - permission
   }
 
-  public getCountPermissions(stack: number): number {
+  public getCountPermissions(stack: number): number | string {
+    if (stack === Permission.ALL) return 'Все права'
+
     return Object.keys(PermissionProperties).reduce(
       (count, permission) =>
         (count += this.checkPermission(stack, +permission) ? 1 : 0),

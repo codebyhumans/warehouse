@@ -10,6 +10,7 @@ export interface IUserStore {
   ) => Promise<Boolean>
   authentication: () => any
   logout: () => any
+  isCurrentUser: (id: number) => boolean
   isAuthorized: boolean
   loadedUser?: boolean
   currentUser?: IUser
@@ -33,6 +34,10 @@ export class UserStore implements IUserStore {
     } catch (error) {
       console.error(error)
     }
+  }
+
+  isCurrentUser = (id: number): boolean => {
+    return this.currentUser?.id === id
   }
 
   @action

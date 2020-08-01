@@ -16,6 +16,7 @@ import { IRole } from '@common/database/types/role'
 import { RoleManageModal } from './RoleManageModal'
 import { permissionsService } from '@client/services/permissions-servise'
 import { Date } from '@client/components/Date'
+import Tag from '@atlaskit/tag'
 
 export const useRolesTable = () => {
   const { closeModal, openModal, openDialog } = useModals()
@@ -27,6 +28,15 @@ export const useRolesTable = () => {
       {
         Header: 'Название',
         accessor: 'name',
+        Cell: ({ cell }) => (
+          <>
+            {cell.row.original.system ? (
+              <Tag text={cell.value} color="blueLight" />
+            ) : (
+              cell.value
+            )}
+          </>
+        ),
       },
       {
         Header: 'Кол-во прав',
@@ -48,18 +58,22 @@ export const useRolesTable = () => {
         accessor: 'id',
         width: 100,
         Cell: ({ cell }) => (
-          <DropdownMenu
-            trigger={<EditorMoreIcon label="Действия" />}
-            triggerType="button">
-            <DropdownItemGroup>
-              <DropdownItem onClick={onEdit(cell.row.original)}>
-                Редактировать
-              </DropdownItem>
-              <DropdownItem onClick={onDelete(cell.row.original)}>
-                Удалить
-              </DropdownItem>
-            </DropdownItemGroup>
-          </DropdownMenu>
+          <>
+            {!cell.row.original.system && (
+              <DropdownMenu
+                trigger={<EditorMoreIcon label="Действия" />}
+                triggerType="button">
+                <DropdownItemGroup>
+                  <DropdownItem onClick={onEdit(cell.row.original)}>
+                    Редактировать
+                  </DropdownItem>
+                  <DropdownItem onClick={onDelete(cell.row.original)}>
+                    Удалить
+                  </DropdownItem>
+                </DropdownItemGroup>
+              </DropdownMenu>
+            )}
+          </>
         ),
       },
     ],

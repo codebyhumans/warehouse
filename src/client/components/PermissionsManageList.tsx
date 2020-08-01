@@ -37,7 +37,6 @@ export const PermissionsManageList: React.FC<IProps> = (props) => {
 
   return (
     <>
-      {stack}
       {permissions.map((permission, idx) => (
         <Checkbox
           key={idx}
