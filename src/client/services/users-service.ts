@@ -59,7 +59,7 @@ class UsersService {
   async removeUserById(id: number) {
     return db<IUser>('user')
       .where({ id })
-      .update({ password: null, deletedAt: db.fn.now() })
+      .update({ deletedAt: db.fn.now() })
       .catch((error) => console.log(error))
   }
 }

@@ -9,14 +9,16 @@ import { Container } from '@client/theme/grid'
 import { useUsersTable } from './UsersTableProcessor'
 import { UserManageModal } from './UserManageModal'
 
-const ActionsContent = () => {
+const ActionsContent: React.FC<{ refresh: () => void }> = (props) => {
   const { openModal } = useModals()
 
   return (
     <ButtonGroup>
       <Button
         appearance="primary"
-        onClick={() => openModal(() => <UserManageModal />)}>
+        onClick={() =>
+          openModal(() => <UserManageModal onSuccess={props.refresh} />)
+        }>
         Добавить
       </Button>
     </ButtonGroup>
@@ -24,11 +26,13 @@ const ActionsContent = () => {
 }
 
 export const UsersPage: React.FC = () => {
-  const { settings } = useUsersTable()
+  const { settings, refresh } = useUsersTable()
 
   return (
     <Container>
-      <PageHeader actions={<ActionsContent />}>Пользователи</PageHeader>
+      <PageHeader actions={<ActionsContent refresh={refresh} />}>
+        Пользователи
+      </PageHeader>
       <Table {...settings} />
     </Container>
   )

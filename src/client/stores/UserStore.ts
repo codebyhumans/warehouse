@@ -29,7 +29,6 @@ export class UserStore implements IUserStore {
   authentication = async () => {
     try {
       const user = await authService.authentication()
-      console.log(user)
       if (user) this.currentUser = user
     } catch (error) {
       console.error(error)

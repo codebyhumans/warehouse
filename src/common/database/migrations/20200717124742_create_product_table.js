@@ -4,9 +4,16 @@ exports.up = function (knex) {
     table.string('name').notNullable()
     table.integer('markup').notNullable().defaultTo(0)
 
-    table.integer('unitId', 11).unsigned().references('id').inTable('unit')
+    table
+      .integer('unitId', 11)
+      .unsigned()
+      .references('id')
+      .inTable('unit')
+      .onDelete('SET NULL')
+
     table
       .integer('categoryId', 11)
+      .notNullable()
       .unsigned()
       .references('id')
       .inTable('category')

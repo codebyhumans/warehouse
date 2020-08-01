@@ -35,13 +35,15 @@ export const useUsersTable = () => {
           Cell: ({ cell }) => (
             <CellName>
               {cell.row.original.name}
-              <CellNameIcon>
-                <EditorSuccessIcon
-                  primaryColor={colors.G300}
-                  label="same-user"
-                  size="small"
-                />
-              </CellNameIcon>
+              {isCurrentUser(cell.row.original.id) && (
+                <CellNameIcon>
+                  <EditorSuccessIcon
+                    primaryColor={colors.G300}
+                    label="same-user"
+                    size="small"
+                  />
+                </CellNameIcon>
+              )}
             </CellName>
           ),
         },

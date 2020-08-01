@@ -18,14 +18,11 @@ export class UsersStore {
 
   @action
   loadUsers = async () => {
-    console.log('load users')
     try {
       const users = await usersService.getAllUsers()
-      console.log(users)
       this.users = users
     } catch (error) {
       console.log(error)
-      //process error
     }
   }
 }
