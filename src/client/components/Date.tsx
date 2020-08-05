@@ -11,13 +11,13 @@ interface IProps {
 }
 
 export const Date: React.FC<IProps> = ({ value, format, detailFormat }) => {
-  const date = useMemo(() => dayjs(value).format(format || 'MMMM D, YYYY'), [
+  const date = useMemo(() => dayjs(value).format(format || 'DD.MM.YYYY'), [
     value,
     format,
   ])
 
   const detailDate = useMemo(
-    () => dayjs(value).format(detailFormat || 'dddd, MMMM D, YYYY HH:mm'),
+    () => dayjs(value).format(detailFormat || 'HH:mm dddd, D MMMM, YYYY'),
     [value, detailFormat],
   )
 

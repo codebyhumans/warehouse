@@ -6,6 +6,7 @@ import { ipcRenderer as ipc } from 'electron'
 import { Notifications } from '@client/components/Notifications'
 import { Modals } from '@client/components/Modals'
 import { Routes } from '@client/Routes'
+import '@client/theme/global-style'
 
 export const App: React.FC = () => {
   useEffect(() => {

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import styled from 'styled-components'
 import {
   useTable,
@@ -8,6 +8,7 @@ import {
   useSortBy,
   Cell,
 } from 'react-table'
+import { colors } from '@atlaskit/theme'
 
 interface ITable {
   onColumnResizeChange?: (columnResizing: any) => void
@@ -17,6 +18,7 @@ interface ITable {
   initialState?: {}
   data: any[]
   onRowClick?: (data?: any) => void
+  fluid?: boolean
 }
 
 const Table: React.FC<ITable> = ({
@@ -41,8 +43,8 @@ const Table: React.FC<ITable> = ({
       columns,
       data,
     },
-    useResizeColumns,
     useBlockLayout,
+    useResizeColumns,
     useSortBy,
   )
 
@@ -66,107 +68,125 @@ const Table: React.FC<ITable> = ({
 
   return (
     <Wrapper {...getTableProps()}>
-      <Header>
+      <Container>
         {headerGroups.map((headerGroup) => (
-          <Row {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column) => (
-              <HeaderCell
-                {...column.getHeaderProps(column.getSortByToggleProps())}>
-                {column.render('Header')}
-                {column.isSorted && <Sort desc={column.isSortedDesc} />}
-                <Resizer
-                  {...column.getResizerProps()}
-                  isResizing={column.isResizing}
-                />
-              </HeaderCell>
-            ))}
-          </Row>
-        ))}
-      </Header>
-
-      <Body {...getTableBodyProps()}>
-        {rows.map((row, i) => {
-          prepareRow(row)
-          return (
-            <Row {...row.getRowProps()} className="tr">
-              {row.cells.map((cell) => {
-                return (
-                  <Cell
-                    {...cell.getCellProps()}
-                    onClick={(e) => onCellClick(e, cell)}
-                    className="td">
-                    {cell.render('Cell')}
-                  </Cell>
-                )
-              })}
+          <Header>
+            <Row {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column) => (
+                <Cell
+                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                  className="truncate">
+                  {column.render('Header')}
+                  {column.isSorted && <Sort isDesc={column.isSortedDesc} />}
+                  {column.canResize && (
+                    <Resizer
+                      {...column.getResizerProps()}
+                      isResizing={column.isResizing}
+                    />
+                  )}
+                </Cell>
+              ))}
             </Row>
-          )
-        })}
-      </Body>
-
-      <Footer>
-        {footerGroups.map((group) => (
-          <Row {...group.getFooterGroupProps()}>
-            {group.headers.map((column) => (
-              <Cell {...column.getFooterProps()}>
-                {column.render('Footer')}
-              </Cell>
-            ))}
-          </Row>
+          </Header>
         ))}
-      </Footer>
+
+        {/* Body */}
+        <Body {...getTableBodyProps()}>
+          {rows.map((row) => {
+            prepareRow(row)
+
+            return (
+              <BodyRow>
+                <div {...row.getRowProps()}>
+                  {row.cells.map((cell) => (
+                    <Cell {...cell.getCellProps()} className="truncate">
+                      {cell.render('Cell')}
+                    </Cell>
+                  ))}
+                </div>
+              </BodyRow>
+            )
+          })}
+        </Body>
+
+        {/* Footer */}
+        {footerGroups.map((group) => (
+          <FooterRaw>
+            <div {...group.getFooterGroupProps()}>
+              {group.headers.map((column) => (
+                <FooterCell {...column.getFooterProps()}>
+                  {column.render('Footer')}
+                </FooterCell>
+              ))}
+            </div>
+          </FooterRaw>
+        ))}
+      </Container>
     </Wrapper>
   )
 }
 
-/* border-top-color: ${(props) => props.isDesc && '#172B4D'}; */
-/* border-bottom-color: ${(props) => !props.isDesc && '#172B4D'}; */
+const Container = styled.div`
+  display: inline-flex;
+  flex-direction: column;
+  align-items: stretch;
+  height: 100%;
+  min-width: 100%;
+`
 
 const Wrapper = styled.div`
-  display: flex;
-  flex-direction: column;
   overflow: auto;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
-  margin: 24px 0;
-`
-
-const Header = styled.div`
-  background: #f9fafb;
-  border-bottom: 1px solid #e5e7eb;
-`
-
-const Footer = styled.div`
-  background: #eef0f2;
-  border-top: 1px solid #e5e7eb;
+  flex: 1;
 `
 
 const Body = styled.div`
-  flex: 1;
   overflow: auto;
+  flex: 1;
 `
 
 const Row = styled.div`
-  :not(:last-child) {
-    border-bottom: 1px solid #e5e7eb;
+  padding-right: 30px;
+  padding-left: 30px;
+`
+
+const BodyRow = styled(Row)`
+  border-bottom: 1px solid ${colors.N30};
+
+  :nth-child(2n) {
+    background: ${colors.N10};
   }
+`
+
+const FooterRaw = styled(Row)`
+  border-top: 1px solid ${colors.N30};
+  background: ${colors.N20};
+  margin-top: -1px;
+`
+
+const FooterCell = styled.div`
+  padding: 2px 10px;
+`
+
+const Header = styled.div`
+  border-bottom: 1px solid ${colors.N30};
+  background: ${colors.N20};
+  font-weight: 500;
+  font-size: 13px;
+  min-width: 100%;
 `
 
 const Cell = styled.div`
-  padding: 5px 15px;
+  padding: 5px 10px;
+
   :not(:last-child) {
-    border-right: 1px solid #e5e7eb;
+    border-right: 1px solid ${colors.N30};
   }
 `
 
-const HeaderCell = styled(Cell)`
-  padding: 10px 15px;
-  font-weight: 500;
-  font-size: 13px;
-`
-
-const Sort = styled.div<{ readonly desc: boolean | undefined }>`
+const Sort = styled.div<{ isDesc?: boolean }>`
   position: relative;
+  margin-right: 5px;
+  margin-left: 3px;
 
   &:before,
   &:after {
@@ -179,29 +199,37 @@ const Sort = styled.div<{ readonly desc: boolean | undefined }>`
     border-width: 3px;
     border-style: solid;
     border-image: initial;
-    border-bottom: 3px solid rgb(223, 225, 230);
+    border-bottom: 3px solid ${colors.N80};
   }
 
   &:before {
     bottom: 0px;
-    border-color: rgb(223, 225, 230) transparent transparent;
+    border-color: ${colors.N80} transparent transparent;
+    border-top-color: ${(props) => props.isDesc && colors.N800};
   }
 
   &:after {
     bottom: 8px;
-    border-color: transparent transparent rgb(223, 225, 230);
+    border-color: transparent transparent ${colors.N80};
+    border-bottom-color: ${(props) => !props.isDesc && colors.N800};
   }
 `
 
 const Resizer = styled.div<{ isResizing: boolean }>`
-  width: 10px;
   height: 100%;
+  width: 10px;
+
+  transform: translateX(50%);
   position: absolute;
+  z-index: 1;
   right: 0;
   top: 0;
-  transform: translateX(50%);
-  z-index: 1;
-  touch-action: none;
+
+  background: ${(props) => props.isResizing && colors.N600};
+
+  :hover {
+    background: ${colors.N600};
+  }
 `
 
 export default Table

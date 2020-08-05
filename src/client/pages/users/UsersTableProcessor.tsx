@@ -64,6 +64,7 @@ export const useUsersTable = () => {
         {
           Header: '',
           accessor: 'id',
+          disableResizing: true,
           width: 100,
           Cell: ({ cell }) => (
             <DropdownMenu

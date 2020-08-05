@@ -36,7 +36,11 @@ export const useProductsTable = (categoryId: number) => {
         {
           Header: 'Цена',
           accessor: 'price',
-          Cell: ({ cell }) => <Currency value={cell.value} />,
+          Cell: ({ cell }) => (
+            <b>
+              <Currency value={cell.value} />
+            </b>
+          ),
         },
         {
           Header: 'Сумма',
