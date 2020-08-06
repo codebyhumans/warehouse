@@ -12,6 +12,7 @@ import Drawer from '@atlaskit/drawer'
 import { categoriesService } from '@client/services/categories-service'
 import { ICategory } from '@common/database/types/category'
 import { IProduct } from '@common/database/types/product'
+import { productsService } from '@client/services/products-service'
 
 const Result = styled.div`
   padding-left: 8px;
@@ -28,8 +29,13 @@ export const SearchDrawer = () => {
       try {
         setLoading(true)
 
-        const categories = await categoriesService.searchCategories(value, 5)
+        const [categories, products] = await Promise.all([
+          categoriesService.searchCategories(value, 5),
+          productsService.searchProducts(value, 10),
+        ])
+
         setCategories(categories)
+        setProducts(products)
       } finally {
         setLoading(false)
       }
@@ -50,6 +56,10 @@ export const SearchDrawer = () => {
 
   const onCategoryClick = () => {
     // TODO: Open category in warehouse page
+  }
+
+  const onProductClick = () => {
+    // TODO: Open product modal
   }
 
   return (
@@ -73,6 +83,17 @@ export const SearchDrawer = () => {
                   key={idx}
                   name={name}
                   onClick={onCategoryClick}
+                />
+              ))}
+            </ResultItemGroup>
+            <ResultItemGroup title="Товары">
+              {products.map(({ id, name, categoryName }, idx) => (
+                <ObjectResult
+                  resultId={id}
+                  key={idx}
+                  name={name}
+                  containerName={categoryName}
+                  onClick={onProductClick}
                 />
               ))}
             </ResultItemGroup>

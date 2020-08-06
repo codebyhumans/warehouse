@@ -1,22 +1,39 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 
-import { ProductsTable } from './ProductsTable'
-import { OperationsTable } from './OperationsTable'
 import { colors } from '@atlaskit/theme'
 
+import { OperationsTable } from './operations/OperationsTable'
+import { ProductsTable } from './products/ProductsTable'
+import { localConfig } from '@common/local-config'
+
 export const WarehousePage: React.FC = () => {
+  const [selectedCategory, setSelectedCategory] = useState<number>(
+    localConfig.get('pages.warehouse.category', 6),
+  )
+  const [selectedProduct, setSelectedProduct] = useState<number>(
+    localConfig.get('pages.warehouse.product', 1),
+  )
+
+  useEffect(() => {
+    localConfig.set('pages.warehouse.category', selectedCategory)
+  }, [selectedCategory])
+
+  useEffect(() => {
+    localConfig.set('pages.warehouse.product', selectedProduct)
+  }, [selectedProduct])
+
   return (
     <Container>
       <Sidebar>Sidebar</Sidebar>
       <Main>
         <MainSection>
           <ActionsBar />
-          <ProductsTable categoryId={6} />
+          <ProductsTable categoryId={selectedCategory} />
         </MainSection>
         <AddSection>
           <ActionsBar />
-          <OperationsTable productId={1} />
+          <OperationsTable productId={selectedProduct} />
         </AddSection>
       </Main>
     </Container>
@@ -76,5 +93,4 @@ const AddSection = styled.div`
   display: flex;
   flex-direction: column;
   height: 40%;
-  /* flex-shrink: 0; */
 `

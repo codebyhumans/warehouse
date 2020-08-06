@@ -9,4 +9,5 @@ export interface IProduct {
   unitName?: string
   unitMeasure?: string
   categoryId: number
+  categoryName?: string
 }

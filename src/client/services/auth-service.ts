@@ -1,9 +1,9 @@
 import { machineIdSync } from 'node-machine-id'
 import bcrypt from 'bcrypt'
 
+import { IUser } from '@common/database/types/user'
 import { configService } from './config-service'
 import { usersService } from './users-service'
-import { IUser } from '@common/database/types/user'
 
 class AuthService {
   async authentication(): Promise<IUser | undefined> {

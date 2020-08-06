@@ -73,6 +73,15 @@ class ProductsService {
       })
       .groupBy('p.id')
   }
+
+  async searchProducts(name: string, limit: number) {
+    return db<IProduct>('product as p')
+      .select(['p.id', 'p.name', 'c.name as categoryName'])
+      .where('p.name', 'like', `%${name}%`)
+      .limit(limit)
+      .leftJoin('category as c', 'p.categoryId', 'c.id')
+      .groupBy('p.id')
+  }
 }
 
 export const productsService = new ProductsService()
