@@ -1,14 +1,18 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import PageHeader from '@atlaskit/page-header'
 import { Container } from '@client/theme/grid'
 import Button, { ButtonGroup } from '@atlaskit/button'
 
 import { useModals } from '@client/components/Modals'
-import { useRolesTable } from './RolesTableProcessor'
+import { useRolesTable, IRolesTableHandles, RolesTable } from './RolesTable'
 import { RoleManageModal } from './RoleManageModal'
 import { Table } from '@client/components/Table'
 
-const ActionsContent: React.FC<{ refresh: () => void }> = (props) => {
+interface IActionsProps {
+  refresh: () => void
+}
+
+const ActionsContent: React.FC<IActionsProps> = (props) => {
   const { openModal } = useModals()
 
   return (
@@ -25,14 +29,16 @@ const ActionsContent: React.FC<{ refresh: () => void }> = (props) => {
 }
 
 export const RolesPage: React.FC = () => {
-  const { settings, refresh } = useRolesTable()
+  const tableRef = useRef<IRolesTableHandles>(null)
+
+  const refreshTable = () => tableRef.current?.refresh()
 
   return (
     <Container>
-      <PageHeader actions={<ActionsContent refresh={refresh} />}>
+      <PageHeader actions={<ActionsContent refresh={refreshTable} />}>
         Роли
       </PageHeader>
-      <Table {...settings} />
+      <RolesTable ref={tableRef} />
     </Container>
   )
 }

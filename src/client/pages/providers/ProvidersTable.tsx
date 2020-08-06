@@ -1,4 +1,10 @@
-import React from 'react'
+import React, {
+  useEffect,
+  useImperativeHandle,
+  RefForwardingComponent,
+  useState,
+  forwardRef,
+} from 'react'
 
 import DropdownMenu, {
   DropdownItem,
@@ -10,25 +16,78 @@ import { colors } from '@atlaskit/theme'
 
 import { providersService } from '@client/services/providers-service'
 import { useNotifications } from '@client/components/Notifications'
-import { useTableProcessor } from '@client/components/Table'
+import { ProviderDetailsModal } from './ProviderDetailsModal'
 import { IProvider } from '@common/database/types/provider'
 import { ProviderManageModal } from './ProviderManageModal'
 import { useModals } from '@client/components/Modals'
-import { ProviderDetailsModal } from './ProviderDetailsModal'
+import { Table } from '@client/components/Table'
 
-export const useProvidersTable = () => {
+export interface IProvidersTableHandles {
+  refresh: () => void
+}
+
+const TableComponent: RefForwardingComponent<IProvidersTableHandles> = (
+  props,
+  ref,
+) => {
   const { closeModal, openDialog, openModal } = useModals()
+  const [data, setData] = useState<IProvider[]>([])
   const { notify } = useNotifications()
+
+  const load = async () => {
+    const providers = await providersService.getAllProviders()
+    setData(providers)
+  }
+
+  useEffect(() => {
+    load()
+  }, [])
+
+  useImperativeHandle(ref, () => ({
+    refresh: load,
+  }))
 
   const openProviderDetailsModal = (provider: IProvider) => {
     openModal(() => <ProviderDetailsModal provider={provider} />)
   }
 
-  const tableProcessor = useTableProcessor<IProvider>(
-    providersService.getAllProviders,
-    {
-      name: 'providers',
-      columns: [
+  const onEdit = (data: IProvider) => () =>
+    openModal(() => <ProviderManageModal onSuccess={load} id={data.id} />)
+
+  const onDelete = (data: IProvider) => () =>
+    openDialog({
+      heading: 'Удаление поставщика',
+      content: `Вы действительно хотите удалить поставщика "${data.name}"?`,
+      appearance: 'danger',
+      actions: [
+        {
+          text: 'Удалить',
+          async onClick() {
+            await providersService.deleteProviderById(data.id)
+
+            notify({
+              title: `Поставщик успешно удален`,
+              icon: (
+                <SuccessIcon
+                  primaryColor={colors.G300}
+                  label="add-user-success"
+                />
+              ),
+            })
+
+            load()
+            closeModal()
+          },
+        },
+      ],
+    })
+
+  return (
+    <Table<IProvider>
+      name="providers"
+      onRowClick={openProviderDetailsModal}
+      data={data}
+      columns={[
         {
           Header: 'Название',
           accessor: 'name',
@@ -64,43 +123,9 @@ export const useProvidersTable = () => {
             </DropdownMenu>
           ),
         },
-      ],
-      onRowClick: openProviderDetailsModal,
-    },
+      ]}
+    />
   )
-
-  const onEdit = (data: IProvider) => () =>
-    openModal(() => (
-      <ProviderManageModal onSuccess={tableProcessor.refresh} id={data.id} />
-    ))
-
-  const onDelete = (data: IProvider) => () =>
-    openDialog({
-      heading: 'Удаление поставщика',
-      content: `Вы действительно хотите удалить поставщика "${data.name}"?`,
-      appearance: 'danger',
-      actions: [
-        {
-          text: 'Удалить',
-          async onClick() {
-            await providersService.deleteProviderById(data.id)
-
-            notify({
-              title: `Поставщик успешно удален`,
-              icon: (
-                <SuccessIcon
-                  primaryColor={colors.G300}
-                  label="add-user-success"
-                />
-              ),
-            })
-
-            tableProcessor.refresh()
-            closeModal()
-          },
-        },
-      ],
-    })
-
-  return tableProcessor
 }
+
+export const ProvidersTable = forwardRef(TableComponent)

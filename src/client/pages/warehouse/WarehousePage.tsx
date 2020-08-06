@@ -1,38 +1,27 @@
-import React, { useState } from 'react'
-import PageHeader from '@atlaskit/page-header'
-import { WarehouseTree } from './WarehouseTree'
-import { Table } from '@client/components/Table'
-import { useProductsTable } from './ProductsTableProcessor'
-import { useOperationsTable } from './OperationsTableProcessor'
+import React from 'react'
 import styled from 'styled-components'
+
+import { ProductsTable } from './ProductsTable'
+import { OperationsTable } from './OperationsTable'
 import { colors } from '@atlaskit/theme'
 
 export const WarehousePage: React.FC = () => {
-  const { settings: productsSettings } = useProductsTable(6)
-  const { settings: operationsSettings } = useOperationsTable(1)
-
   return (
     <Container>
       <Sidebar>Sidebar</Sidebar>
       <Main>
         <MainSection>
           <ActionsBar />
-          <Table {...productsSettings} />
+          <ProductsTable categoryId={6} />
         </MainSection>
         <AddSection>
           <ActionsBar />
-          <Table {...operationsSettings} />
+          <OperationsTable productId={1} />
         </AddSection>
       </Main>
     </Container>
   )
 }
-
-// {/* <PageHeader>Склад</PageHeader>
-// {/* <WarehouseTree /> */}
-
-//
-// <Table {...operationsSettings} /> */}
 
 const Container = styled.div`
   flex: 1;

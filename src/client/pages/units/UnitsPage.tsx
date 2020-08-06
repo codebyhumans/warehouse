@@ -1,14 +1,17 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import PageHeader from '@atlaskit/page-header'
 import { Container } from '@client/theme/grid'
 import Button, { ButtonGroup } from '@atlaskit/button'
 
+import { UnitsTable, IUnitsTableHandles } from './UnitsTable'
 import { useModals } from '@client/components/Modals'
-import { Table } from '@client/components/Table'
-import { useUnitsTable } from './UnitsTableProcessor'
 import { UnitManageModal } from './UnitManageModal'
 
-const ActionsContent: React.FC<{ refresh: () => void }> = (props) => {
+interface IActionsProps {
+  refresh: () => void
+}
+
+const ActionsContent: React.FC<IActionsProps> = (props) => {
   const { openModal } = useModals()
 
   return (
@@ -25,14 +28,16 @@ const ActionsContent: React.FC<{ refresh: () => void }> = (props) => {
 }
 
 export const UnitsPage: React.FC = () => {
-  const { settings, refresh } = useUnitsTable()
+  const tableRef = useRef<IUnitsTableHandles>(null)
+
+  const refreshTable = () => tableRef.current?.refresh()
 
   return (
     <Container>
-      <PageHeader actions={<ActionsContent refresh={refresh} />}>
+      <PageHeader actions={<ActionsContent refresh={refreshTable} />}>
         Единицы измерения
       </PageHeader>
-      <Table {...settings} />
+      <UnitsTable ref={tableRef} />
     </Container>
   )
 }

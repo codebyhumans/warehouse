@@ -1,20 +1,38 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+import styled from 'styled-components'
 
 import { operationsService } from '@client/services/operations-service'
-import { IOperation, IOperationType } from '@common/database/types/operation'
 import EditorSuccessIcon from '@atlaskit/icon/glyph/editor/success'
-import { useTableProcessor } from '@client/components/Table'
-import { Date } from '@client/components/Date'
-import { Currency } from '@client/components/Currency'
-import styled from 'styled-components'
 import { colors } from '@atlaskit/theme'
 
-export const useOperationsTable = (productId: number) => {
-  const tableProcessor = useTableProcessor<IOperation>(
-    () => operationsService.getOperationsByProduct(productId),
-    {
-      name: 'operations',
-      columns: [
+import { IOperation, IOperationType } from '@common/database/types/operation'
+import { Table } from '@client/components/Table'
+import { Currency } from '@client/components/Currency'
+import { Date } from '@client/components/Date'
+
+interface IProps {
+  productId: number
+}
+
+export const OperationsTable: React.FC<IProps> = (props) => {
+  const [data, setData] = useState<IOperation[]>([])
+
+  const loadData = async () => {
+    const operations = await operationsService.getOperationsByProduct(
+      props.productId,
+    )
+    setData(operations)
+  }
+
+  useEffect(() => {
+    loadData()
+  }, [props.productId])
+
+  return (
+    <Table<IOperation>
+      name="operations"
+      data={data}
+      columns={[
         {
           Header: 'Документ',
           accessor: 'number',
@@ -58,11 +76,9 @@ export const useOperationsTable = (productId: number) => {
           accessor: 'createdAt',
           Cell: ({ cell }) => <Date value={cell.value} />,
         },
-      ],
-    },
+      ]}
+    />
   )
-
-  return tableProcessor
 }
 
 const CellName = styled.div`

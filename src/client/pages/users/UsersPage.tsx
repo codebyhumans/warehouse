@@ -1,15 +1,18 @@
-import React from 'react'
+import React, { useRef } from 'react'
 
 import Button, { ButtonGroup } from '@atlaskit/button'
 import PageHeader from '@atlaskit/page-header'
 
+import { UsersTable, IUsersTableHandles } from './UsersTable'
 import { useModals } from '@client/components/Modals'
-import { Table } from '@client/components/Table'
-import { Container } from '@client/theme/grid'
-import { useUsersTable } from './UsersTableProcessor'
 import { UserManageModal } from './UserManageModal'
+import { Container } from '@client/theme/grid'
 
-const ActionsContent: React.FC<{ refresh: () => void }> = (props) => {
+interface IActionsProps {
+  refresh: () => void
+}
+
+const ActionsContent: React.FC<IActionsProps> = (props) => {
   const { openModal } = useModals()
 
   return (
@@ -26,14 +29,16 @@ const ActionsContent: React.FC<{ refresh: () => void }> = (props) => {
 }
 
 export const UsersPage: React.FC = () => {
-  const { settings, refresh } = useUsersTable()
+  const tableRef = useRef<IUsersTableHandles>(null)
+
+  const refreshTable = () => tableRef.current?.refresh()
 
   return (
     <Container>
-      <PageHeader actions={<ActionsContent refresh={refresh} />}>
+      <PageHeader actions={<ActionsContent refresh={refreshTable} />}>
         Пользователи
       </PageHeader>
-      <Table {...settings} />
+      <UsersTable ref={tableRef} />
     </Container>
   )
 }

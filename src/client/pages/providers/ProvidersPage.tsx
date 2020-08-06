@@ -1,18 +1,22 @@
-import React from 'react'
-import PageHeader from '@atlaskit/page-header'
+import React, { useRef } from 'react'
+
 import Button, { ButtonGroup } from '@atlaskit/button'
+import PageHeader from '@atlaskit/page-header'
 import { Container } from '@client/theme/grid'
 
-import { useProvidersTable } from './ProvidersTableProcessor'
+import { ProvidersTable, IProvidersTableHandles } from './ProvidersTable'
 import { ProviderManageModal } from './ProviderManageModal'
 import { useModals } from '@client/components/Modals'
-import { Table } from '@client/components/Table'
 
-const ActionsContent: React.FC<{ refresh: () => void }> = ({ refresh }) => {
+interface IActionsProps {
+  refresh: () => void
+}
+
+const ActionsContent: React.FC<IActionsProps> = (props) => {
   const { openModal } = useModals()
 
   const handleOnClick = () => {
-    openModal(() => <ProviderManageModal onSuccess={refresh} />)
+    openModal(() => <ProviderManageModal onSuccess={props.refresh} />)
   }
 
   return (
@@ -25,14 +29,16 @@ const ActionsContent: React.FC<{ refresh: () => void }> = ({ refresh }) => {
 }
 
 export const ProvidersPage: React.FC = () => {
-  const { settings, refresh } = useProvidersTable()
+  const tableRef = useRef<IProvidersTableHandles>(null)
+
+  const refreshTable = () => tableRef.current?.refresh()
 
   return (
     <Container>
-      <PageHeader actions={<ActionsContent refresh={refresh} />}>
+      <PageHeader actions={<ActionsContent refresh={refreshTable} />}>
         Поставщики
       </PageHeader>
-      <Table {...settings} />
+      <ProvidersTable ref={tableRef} />
     </Container>
   )
 }

@@ -1,16 +1,33 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 
-import { useTableProcessor } from '@client/components/Table'
-import { IProduct } from '@common/database/types/product'
 import { productsService } from '@client/services/products-service'
+import { IProduct } from '@common/database/types/product'
 import { Currency } from '@client/components/Currency'
+import { Table } from '@client/components/Table'
 
-export const useProductsTable = (categoryId: number) => {
-  const tableProcessor = useTableProcessor<IProduct>(
-    () => productsService.getProductsByCategory(categoryId),
-    {
-      name: 'products',
-      columns: [
+interface IProps {
+  categoryId: number
+}
+
+export const ProductsTable: React.FC<IProps> = (props) => {
+  const [data, setData] = useState<IProduct[]>([])
+
+  const loadData = async () => {
+    const operations = await productsService.getProductsByCategory(
+      props.categoryId,
+    )
+    setData(operations)
+  }
+
+  useEffect(() => {
+    loadData()
+  }, [props.categoryId])
+
+  return (
+    <Table<IProduct>
+      name="products"
+      data={data}
+      columns={[
         {
           Header: 'Название',
           accessor: 'name',
@@ -49,9 +66,7 @@ export const useProductsTable = (categoryId: number) => {
             <Currency value={cell.row.original.price * cell.row.original.qty} />
           ),
         },
-      ],
-    },
+      ]}
+    />
   )
-
-  return tableProcessor
 }
