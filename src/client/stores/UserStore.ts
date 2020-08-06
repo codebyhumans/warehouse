@@ -46,11 +46,7 @@ export class UserStore implements IUserStore {
     remember: boolean,
   ): Promise<boolean> => {
     const user = await authService.authorize(userId, password, remember)
-
-    if (user) {
-      delete user.password
-      this.currentUser = user
-    }
+    if (user) this.currentUser = user
 
     return !!user
   }

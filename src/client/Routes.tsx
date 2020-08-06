@@ -11,8 +11,8 @@ import { useHistory } from 'react-router'
 import { SimpleLayout } from '@client/layouts/SimpleLayout'
 import { BasicLayout } from '@client/layouts/BasicLayout'
 
-import { StartScreen } from '@client/components/StartScreen'
-import { SignIn } from '@client/components/authentication/SignIn'
+import { StartScreen } from '@client/pages/start/StartPage'
+import { LoginPage } from '@client/pages/start/LoginPage'
 
 import { ProvidersPage } from '@client/pages/providers/ProvidersPage'
 import { WarehousePage } from './pages/warehouse/WarehousePage'
@@ -29,11 +29,11 @@ export const Routes: React.FC = () => {
     <Router>
       <Switch>
         <Redirect from="/" to="/start" exact />
-        <Route path={['/start', '/signin']}>
+        <Route path={['/start', '/login']}>
           <SimpleLayout>
             <Switch>
               <Route path="/start" component={StartScreen} />
-              <Route path="/signin" component={SignIn} />
+              <Route path="/login" component={LoginPage} />
             </Switch>
           </SimpleLayout>
         </Route>

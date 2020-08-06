@@ -79,7 +79,7 @@ export const SearchDrawer = () => {
             <ResultItemGroup title="Категории">
               {categories.map(({ id, name }, idx) => (
                 <ObjectResult
-                  resultId={id}
+                  resultId={`category-${id}`}
                   key={idx}
                   name={name}
                   onClick={onCategoryClick}
@@ -89,7 +89,7 @@ export const SearchDrawer = () => {
             <ResultItemGroup title="Товары">
               {products.map(({ id, name, categoryName }, idx) => (
                 <ObjectResult
-                  resultId={id}
+                  resultId={`product-${id}`}
                   key={idx}
                   name={name}
                   containerName={categoryName}

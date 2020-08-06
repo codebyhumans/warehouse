@@ -24,5 +24,5 @@ export const StartScreen = observer(() => {
   }, [])
 
   if (loading) return <Spinner size="large" />
-  return <Redirect to={isAuthorized ? lastLocation.current : '/signin'} />
+  return <Redirect to={isAuthorized ? lastLocation.current : '/login'} />
 })

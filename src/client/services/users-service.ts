@@ -48,7 +48,7 @@ class UsersService {
   async createUser(data: IUserCreateData) {
     return db<IUser>('user').insert({
       ...data,
-      password: bcrypt.hashSync(data.password, 10),
+      password: bcrypt.hashSync(data.password, 12),
     })
   }
 
