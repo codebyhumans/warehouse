@@ -12,6 +12,8 @@ import { Date } from '@client/components/Date'
 
 interface IProps {
   productId: number
+  onRowSelect: (productId: number) => void
+  selected: any
 }
 
 export const OperationsTable: React.FC<IProps> = (props) => {
@@ -31,6 +33,8 @@ export const OperationsTable: React.FC<IProps> = (props) => {
   return (
     <Table<IOperation>
       name="operations"
+      onRowSelect={props.onRowSelect}
+      selected={props.selected}
       data={data}
       columns={[
         {

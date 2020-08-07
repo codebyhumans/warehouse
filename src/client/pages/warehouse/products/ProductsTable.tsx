@@ -7,6 +7,8 @@ import { Table } from '@client/components/Table'
 
 interface IProps {
   categoryId: number
+  onRowSelect: (productId: number) => void
+  selected: any
 }
 
 export const ProductsTable: React.FC<IProps> = (props) => {
@@ -25,6 +27,8 @@ export const ProductsTable: React.FC<IProps> = (props) => {
 
   return (
     <Table<IProduct>
+      onRowSelect={props.onRowSelect}
+      selected={props.selected}
       name="products"
       data={data}
       columns={[

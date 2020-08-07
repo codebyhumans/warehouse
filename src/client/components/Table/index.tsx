@@ -1,12 +1,6 @@
-import React, {
-  useMemo,
-  useState,
-  useEffect,
-  forwardRef,
-  Ref,
-  useImperativeHandle,
-} from 'react'
+import React, { useMemo, useEffect } from 'react'
 import styled from 'styled-components'
+import get from 'lodash/get'
 import {
   useTable,
   useBlockLayout,
@@ -16,15 +10,18 @@ import {
   Cell,
 } from 'react-table'
 
-import { colors } from '@atlaskit/theme'
 import { localConfig } from '@common/local-config'
+import { colors } from '@atlaskit/theme'
 
 interface IProps<T extends Object> {
-  columnOptions?: {}
+  onRowSelect?: (key: any) => void
   onRowClick?: (data: T) => void
+  selectField?: string
   columns: Column<T>[]
-  data: T[]
+  columnOptions?: {}
+  selected?: any
   name: string
+  data: T[]
 }
 
 const setTableState = (tableName: string, key: string, value: any) =>
@@ -74,6 +71,15 @@ export function Table<T extends Object>(props: IProps<T>) {
     useSortBy,
   )
 
+  const selectedRowIndex = useMemo(() => {
+    if (!props.selected || !props.data) return
+
+    const selectedField = props.selectField || 'id'
+    return rows.findIndex(
+      (row) => row.original[selectedField] === props.selected,
+    )
+  }, [rows, props.selected])
+
   useEffect(() => {
     setTableState(props.name, 'sizes', columnResizing)
   }, [columnResizing])
@@ -83,9 +89,16 @@ export function Table<T extends Object>(props: IProps<T>) {
   }, [sortBy])
 
   const onCellClick = (event: React.MouseEvent, cell: Cell<T>) => {
-    if (!props.onRowClick) return
+    if (props.onRowSelect) {
+      const selectedValue = cell.row.original.id
 
-    if (event.target === event.currentTarget) {
+      if (selectedValue)
+        props.onRowSelect(
+          props.selected !== selectedValue ? selectedValue : null,
+        )
+    }
+
+    if (props.onRowClick && event.target === event.currentTarget) {
       props.onRowClick(cell.row.original)
     }
   }
@@ -121,7 +134,7 @@ export function Table<T extends Object>(props: IProps<T>) {
             prepareRow(row)
 
             return (
-              <BodyRow key={idx}>
+              <BodyRow key={idx} isSelected={idx === selectedRowIndex}>
                 <div {...row.getRowProps()}>
                   {row.cells.map((cell, idx) => (
                     <Cell
@@ -178,12 +191,12 @@ const Row = styled.div`
   padding-left: 30px;
 `
 
-const BodyRow = styled(Row)`
+const BodyRow = styled(Row)<{ isSelected: boolean }>`
   border-bottom: 1px solid ${colors.N30};
+  cursor: pointer;
 
-  :nth-child(2n) {
-    background: ${colors.N10};
-  }
+  background: ${(props) => props.isSelected && colors.linkHover};
+  color: ${(props) => props.isSelected && 'white'};
 `
 
 const FooterRaw = styled(Row)`

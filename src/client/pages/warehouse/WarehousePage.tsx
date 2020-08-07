@@ -12,7 +12,10 @@ export const WarehousePage: React.FC = () => {
     localConfig.get('pages.warehouse.category', 6),
   )
   const [selectedProduct, setSelectedProduct] = useState<number>(
-    localConfig.get('pages.warehouse.product', 1),
+    localConfig.get('pages.warehouse.product'),
+  )
+  const [selectedOperation, setSelectedOperation] = useState<number>(
+    localConfig.get('pages.warehouse.operation'),
   )
 
   useEffect(() => {
@@ -23,17 +26,29 @@ export const WarehousePage: React.FC = () => {
     localConfig.set('pages.warehouse.product', selectedProduct)
   }, [selectedProduct])
 
+  useEffect(() => {
+    localConfig.set('pages.warehouse.operation', selectedOperation)
+  }, [selectedOperation])
+
   return (
     <Container>
       <Sidebar>Sidebar</Sidebar>
       <Main>
         <MainSection>
           <ActionsBar />
-          <ProductsTable categoryId={selectedCategory} />
+          <ProductsTable
+            categoryId={selectedCategory}
+            selected={selectedProduct}
+            onRowSelect={setSelectedProduct}
+          />
         </MainSection>
         <AddSection>
           <ActionsBar />
-          <OperationsTable productId={selectedProduct} />
+          <OperationsTable
+            productId={selectedProduct}
+            selected={selectedOperation}
+            onRowSelect={setSelectedOperation}
+          />
         </AddSection>
       </Main>
     </Container>
