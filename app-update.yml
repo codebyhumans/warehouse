@@ -1,5 +1,4 @@
 provider: github
 owner: codebyhumans
-repo: anchor-crm
-private: true
-updaterCacheDirName: anchor-crm-updater
+repo: warehouse
+updaterCacheDirName: warehouse-updater

@@ -1,5 +1,5 @@
-const { common, extra } = require('./webpack');
-const path = require('path');
+const { common, extra } = require('./webpack')
+const path = require('path')
 
 module.exports = function (options = {}) {
   return {
@@ -19,7 +19,7 @@ module.exports = function (options = {}) {
       path: path.resolve(__dirname, '../dist/bootstrap'),
       filename: 'index.js',
     },
-    plugins: [extra.htmlPlugin('../src/bootstrap/index.html'), extra.dotenvPlugin()],
+    plugins: [extra.htmlPlugin('../src/bootstrap/index.html')],
     ...options,
-  };
-};
+  }
+}

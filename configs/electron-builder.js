@@ -1,19 +1,12 @@
-const dotenv = require('dotenv');
-
-dotenv.config({
-  path: '.env',
-});
-
 module.exports = {
   publish: [
     {
       provider: 'github',
       owner: 'codebyhumans',
-      repo: 'anchor-crm',
-      token: process.env.GH_TOKEN,
+      repo: 'warehouse',
     },
   ],
-  asar: false,
+  asar: true,
   directories: {
     output: 'build/',
   },
@@ -25,5 +18,5 @@ module.exports = {
       to: 'migrations',
     },
   ],
-  appId: 'com.example.app',
-};
+  appId: 'com.codebyhumans.warehouse',
+}

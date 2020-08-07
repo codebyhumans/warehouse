@@ -6,10 +6,6 @@ const path = require('path')
 
 const isProduction = process.env.NODE_ENV === 'production'
 
-const dotenv = require('dotenv').config({
-  path: path.join(__dirname, '../.env'),
-})
-
 module.exports = {
   common: {
     resolve: {
@@ -57,15 +53,6 @@ module.exports = {
       }
 
       return external
-    },
-    dotenvPlugin() {
-      const env = {}
-
-      for (const key in dotenv.parsed) {
-        env[`process.env.${key}`] = JSON.stringify(dotenv.parsed[key])
-      }
-
-      return new webpack.DefinePlugin(env)
     },
     copyPlugin(patterns) {
       return new CopyWebpackPlugin({
