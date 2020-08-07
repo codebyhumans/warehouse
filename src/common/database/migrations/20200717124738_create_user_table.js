@@ -1,5 +1,5 @@
-exports.up = function (knex) {
-  return knex.schema.createTable('user', function (table) {
+exports.up = async function (knex) {
+  await knex.schema.createTable('user', function (table) {
     table.increments('id').primary()
     table.string('name').notNullable()
     table.string('password').notNullable()
@@ -16,6 +16,14 @@ exports.up = function (knex) {
       .inTable('role')
       .onDelete('SET NULL')
   })
+
+  await knex('User').insert([
+    {
+      name: 'Администратор',
+      password: '$2b$12$XoycntF2WhvtcBMb0WfwwO9W4QNH7MrVNnLILZxDECTWEkzbcArWi',
+      roleId: 1,
+    },
+  ])
 }
 
 exports.down = function (knex) {

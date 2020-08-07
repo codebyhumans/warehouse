@@ -1,14 +1,14 @@
-const WebpackDevServer = require('webpack-dev-server');
-const inquirer = require('inquirer');
-const webpack = require('webpack');
+const WebpackDevServer = require('webpack-dev-server')
+const inquirer = require('inquirer')
+const webpack = require('webpack')
 
 const staticBuild = (webpackConfig, options) => {
   return new Promise((resolve, reject) => {
-    const config = webpackConfig(options);
-    const compiler = webpack(config);
+    const config = webpackConfig(options)
+    const compiler = webpack(config)
 
     compiler.run((err, stats) => {
-      if (err) return reject(err);
+      if (err) return reject(err)
 
       process.stdout.write(
         stats.toString({
@@ -18,31 +18,31 @@ const staticBuild = (webpackConfig, options) => {
           chunks: false,
           chunkModules: false,
         }) + '\n',
-      );
+      )
 
-      resolve();
-    });
-  });
-};
+      resolve()
+    })
+  })
+}
 
 const watchBuild = (webpackConfig, options) => {
   return new Promise((resolve, reject) => {
-    const config = webpackConfig(options);
-    const compiler = webpack(config);
+    const config = webpackConfig(options)
+    const compiler = webpack(config)
 
-    const server = new WebpackDevServer(compiler, config.devServer);
+    const server = new WebpackDevServer(compiler, config.devServer)
 
     server.listen(config.devServer.port, 'localhost', (err) => {
       if (err) {
-        reject(err);
+        reject(err)
       }
 
-      resolve();
-    });
-  });
-};
+      resolve()
+    })
+  })
+}
 
-(async function () {
+;(async function () {
   const answers = await inquirer.prompt([
     {
       message: 'Select environment',
@@ -55,18 +55,13 @@ const watchBuild = (webpackConfig, options) => {
       name: 'bootstrap',
       type: 'confirm',
       when(answers) {
-        return answers.mode === 'development';
+        return answers.mode === 'development'
       },
     },
-    {
-      message: 'Start electron?',
-      name: 'electron',
-      type: 'confirm',
-    },
-  ]);
+  ])
 
-  process.env.NODE_ENV = answers.mode;
-  const isProduction = process.env.NODE_ENV === 'production';
+  process.env.NODE_ENV = answers.mode
+  const isProduction = process.env.NODE_ENV === 'production'
 
   await Promise.all([
     staticBuild(require('../configs/webpack.electron'), {
@@ -78,9 +73,7 @@ const watchBuild = (webpackConfig, options) => {
     }),
     [isProduction ? staticBuild : watchBuild][0](require('../configs/webpack.bootstrap')),
     [isProduction ? staticBuild : watchBuild][0](require('../configs/webpack.client')),
-  ]);
+  ])
 
-  if (answers.electron) {
-    require('child_process').exec('electron .');
-  }
-})();
+  require('child_process').exec('electron .')
+})()

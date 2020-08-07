@@ -8,6 +8,7 @@
   "scripts": {
     "electron": "electron .",
     "start": "node scripts/start.js",
+    "build": "node scripts/build.js",
     "pack": "electron-builder --dir --config configs/electron-builder.js",
     "publish": "electron-builder --config configs/electron-builder.js --mac --win -p always"
   },

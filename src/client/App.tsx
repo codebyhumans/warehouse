@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
-import { BrowserRouter as AppRouter } from 'react-router-dom'
+import { BrowserRouter as Router } from 'react-router-dom'
 import { ipcRenderer as ipc } from 'electron'
 
 import { Notifications } from '@client/components/Notifications'
@@ -17,9 +17,9 @@ export const App: React.FC = () => {
     <Wrapper>
       <Notifications>
         <Modals />
-        <AppRouter>
+        <Router>
           <Routes />
-        </AppRouter>
+        </Router>
       </Notifications>
     </Wrapper>
   )
